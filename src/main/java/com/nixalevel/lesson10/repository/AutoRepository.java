@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AutoRepository implements CrudRepository{
+public class AutoRepository implements AutoCrudRepository {
     private final List<Auto> autos;
 
     public AutoRepository() {
@@ -64,7 +64,7 @@ public class AutoRepository implements CrudRepository{
 
     private static class AutoCopy {
         static void copy(final Auto from, final Auto to) {
-            to.setManufacturer(from.getManufacturer());
+            to.setAutoManufacturer(from.getAutoManufacturer());
             to.setModel(from.getModel());
             to.setBodyType(from.getBodyType());
             to.setPrice(from.getPrice());

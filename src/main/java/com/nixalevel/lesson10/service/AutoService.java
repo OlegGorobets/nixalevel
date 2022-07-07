@@ -1,10 +1,10 @@
 package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Auto;
-import com.nixalevel.lesson10.model.Manufacturer;
+import com.nixalevel.lesson10.model.AutoManufacturer;
 import com.nixalevel.lesson10.repository.AutoRepository;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 public class AutoService {
-    //private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
     private static final AutoRepository AUTO_REPOSITORY = new AutoRepository();
 
@@ -26,13 +26,13 @@ public class AutoService {
                     "Model-" + RANDOM.nextInt(1000)
             );
             result.add(auto);
-            //LOGGER.debug("Created auto {}", auto.getId());
+            LOGGER.info("Created auto {}", auto.getId());
         }
         return result;
     }
 
-    private Manufacturer getRandomManufacturer() {
-        final Manufacturer[] values = Manufacturer.values();
+    private AutoManufacturer getRandomManufacturer() {
+        final AutoManufacturer[] values = AutoManufacturer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
     }
@@ -43,7 +43,17 @@ public class AutoService {
 
     public void printAll() {
         for (Auto auto : AUTO_REPOSITORY.getAll()) {
-            System.out.println(auto);
+            LOGGER.info(auto.toString());
         }
+    }
+
+    public void deleteProductByIndex(List<Auto> autos, int index) {
+        AUTO_REPOSITORY.delete(autos.get(index).getId());
+        LOGGER.info("\nAuto " + autos.get(index) + " removed from the list.");
+    }
+
+    public void changeProductByIndex(List<Auto> autos, int index, String bodyType) {
+        AUTO_REPOSITORY.getById(autos.get(index).getId()).setBodyType(bodyType);
+        LOGGER.info("\nAuto " + autos.get(index) + " has been changed.");
     }
 }
