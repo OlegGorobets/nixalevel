@@ -1,5 +1,6 @@
 package com.nixalevel.lesson10.service;
 
+import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.Motorbike;
 import com.nixalevel.lesson10.model.MotorbikeManufacturer;
 import com.nixalevel.lesson10.repository.MotorbikeRepository;
@@ -48,12 +49,14 @@ public class MotorbikeService {
     }
 
     public void deleteProductByIndex(List<Motorbike> motorbikes, int index) {
-        MOTORBIKE_REPOSITORY.delete(motorbikes.get(index).getId());
-        LOGGER.info("\nMotorbike " + motorbikes.get(index) + " removed from the list.");
+        final Motorbike motorbike = motorbikes.get(index);
+        MOTORBIKE_REPOSITORY.delete(motorbike.getId());
+        LOGGER.info("\nMotorbike {} removed from the list.", motorbike);
     }
 
     public void changeProductByIndex(List<Motorbike> motorbikes, int index, int maxSpeed) {
-        MOTORBIKE_REPOSITORY.getById(motorbikes.get(index).getId()).setMaxSpeed(maxSpeed);
-        LOGGER.info("\nMotorbike " + motorbikes.get(index) + " has been changed.");
+        final Motorbike motorbike = motorbikes.get(index);
+        MOTORBIKE_REPOSITORY.getById(motorbike.getId()).setMaxSpeed(maxSpeed);
+        LOGGER.info("\nMotorbike {} has been changed.", motorbike);
     }
 }

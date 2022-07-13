@@ -48,12 +48,14 @@ public class AutoService {
     }
 
     public void deleteProductByIndex(List<Auto> autos, int index) {
-        AUTO_REPOSITORY.delete(autos.get(index).getId());
-        LOGGER.info("\nAuto " + autos.get(index) + " removed from the list.");
+        final Auto auto = autos.get(index);
+        AUTO_REPOSITORY.delete(auto.getId());
+        LOGGER.info("\nAuto {} removed from the list.", auto);
     }
 
     public void changeProductByIndex(List<Auto> autos, int index, String bodyType) {
-        AUTO_REPOSITORY.getById(autos.get(index).getId()).setBodyType(bodyType);
-        LOGGER.info("\nAuto " + autos.get(index) + " has been changed.");
+        final Auto auto = autos.get(index);
+        AUTO_REPOSITORY.getById(auto.getId()).setBodyType(bodyType);
+        LOGGER.info("\nAuto {} has been changed.", auto);
     }
 }

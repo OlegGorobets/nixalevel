@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 public class Bus extends Vehicle {
 
     private int numberOfSeats;
+    private BusManufacturer busManufacturer;
 
     public Bus(String model, BusManufacturer busManufacturer, BigDecimal price, int numberOfSeats) {
-        super(model, busManufacturer, price);
+        super(model, price);
+        this.busManufacturer = busManufacturer;
         this.numberOfSeats = numberOfSeats;
     }
 
@@ -17,6 +19,14 @@ public class Bus extends Vehicle {
 
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
+    }
+
+    public BusManufacturer getBusManufacturer() {
+        return busManufacturer;
+    }
+
+    public void setBusManufacturer(BusManufacturer busManufacturer) {
+        this.busManufacturer = busManufacturer;
     }
 
     @Override

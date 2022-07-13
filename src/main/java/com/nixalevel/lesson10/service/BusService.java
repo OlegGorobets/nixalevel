@@ -1,5 +1,6 @@
 package com.nixalevel.lesson10.service;
 
+import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -48,12 +49,14 @@ public class BusService {
     }
 
     public void deleteProductByIndex(List<Bus> buses, int index) {
-        BUS_REPOSITORY.delete(buses.get(index).getId());
-        LOGGER.info("\nBus " + buses.get(index) + " removed from the list.");
+        final Bus bus = buses.get(index);
+        BUS_REPOSITORY.delete(bus.getId());
+        LOGGER.info("\nBus {} removed from the list.", bus);
     }
 
     public void changeProductByIndex(List<Bus> buses, int index, int numberOfSeats) {
-        BUS_REPOSITORY.getById(buses.get(index).getId()).setNumberOfSeats(numberOfSeats);
-        LOGGER.info("\nBus " + buses.get(index) + " has been changed.");
+        final Bus bus = buses.get(index);
+        BUS_REPOSITORY.getById(bus.getId()).setNumberOfSeats(numberOfSeats);
+        LOGGER.info("\nBus {} has been changed.", bus);
     }
 }

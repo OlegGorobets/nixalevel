@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 public class Motorbike extends Vehicle {
 
     private int maxSpeed;
+    private MotorbikeManufacturer motorbikeManufacturer;
 
     public Motorbike(String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed) {
-        super(model, motorbikeManufacturer, price);
+        super(model, price);
+        this.motorbikeManufacturer = motorbikeManufacturer;
         this.maxSpeed = maxSpeed;
     }
 
@@ -17,6 +19,14 @@ public class Motorbike extends Vehicle {
 
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    public MotorbikeManufacturer getMotorbikeManufacturer() {
+        return motorbikeManufacturer;
+    }
+
+    public void setMotorbikeManufacturer(MotorbikeManufacturer motorbikeManufacturer) {
+        this.motorbikeManufacturer = motorbikeManufacturer;
     }
 
     @Override

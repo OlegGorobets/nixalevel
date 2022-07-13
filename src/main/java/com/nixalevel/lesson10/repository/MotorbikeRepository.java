@@ -64,7 +64,7 @@ public class MotorbikeRepository implements MotorbikeCrudRepository {
 
     private static class MotorbikeCopy {
         static void copy(final Motorbike from, final Motorbike to) {
-            to.setAutoManufacturer(from.getAutoManufacturer());
+            to.setMotorbikeManufacturer(from.getMotorbikeManufacturer());
             to.setModel(from.getModel());
             to.setMaxSpeed(from.getMaxSpeed());
             to.setPrice(from.getPrice());

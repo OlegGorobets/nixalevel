@@ -64,7 +64,7 @@ public class BusRepository implements BusCrudRepository {
 
     private static class BusCopy {
         static void copy(final Bus from, final Bus to) {
-            to.setAutoManufacturer(from.getAutoManufacturer());
+            to.setBusManufacturer(from.getBusManufacturer());
             to.setModel(from.getModel());
             to.setNumberOfSeats(from.getNumberOfSeats());
             to.setPrice(from.getPrice());
