@@ -30,13 +30,21 @@ public class AutoRepository implements AutoCrudRepository {
 
     @Override
     public boolean create(Auto auto) {
-        autos.add(auto);
-        return true;
+        if (auto == null) {
+            return false;
+        } else {
+            autos.add(auto);
+            return true;
+        }
     }
 
     @Override
     public boolean create(List<Auto> auto) {
-        return autos.addAll(auto);
+        if (auto == null) {
+            return false;
+        } else {
+            return autos.addAll(auto);
+        }
     }
 
     @Override

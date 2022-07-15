@@ -30,13 +30,21 @@ public class BusRepository implements BusCrudRepository {
 
     @Override
     public boolean create(Bus bus) {
-        buses.add(bus);
-        return true;
+        if (bus == null) {
+            return false;
+        } else {
+            buses.add(bus);
+            return true;
+        }
     }
 
     @Override
     public boolean create(List<Bus> bus) {
-        return buses.addAll(bus);
+        if (bus == null) {
+            return false;
+        } else {
+            return buses.addAll(bus);
+        }
     }
 
     @Override

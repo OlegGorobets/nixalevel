@@ -37,8 +37,9 @@ public class AutoService {
         return values[index];
     }
 
-    public void saveAutos(List<Auto> autos) {
+    public boolean saveAutos(List<Auto> autos) {
         AUTO_REPOSITORY.create(autos);
+        return true;
     }
 
     public void printAll() {
@@ -47,15 +48,17 @@ public class AutoService {
         }
     }
 
-    public void deleteProductByIndex(List<Auto> autos, int index) {
+    public boolean deleteProductByIndex(List<Auto> autos, int index) {
         final Auto auto = autos.get(index);
         AUTO_REPOSITORY.delete(auto.getId());
         LOGGER.info("\nAuto {} removed from the list.", auto);
+        return true;
     }
 
-    public void changeProductByIndex(List<Auto> autos, int index, String bodyType) {
+    public boolean changeProductByIndex(List<Auto> autos, int index, String bodyType) {
         final Auto auto = autos.get(index);
         AUTO_REPOSITORY.getById(auto.getId()).setBodyType(bodyType);
         LOGGER.info("\nAuto {} has been changed.", auto);
+        return true;
     }
 }

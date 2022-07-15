@@ -38,8 +38,9 @@ public class MotorbikeService {
         return values[index];
     }
 
-    public void saveMotorbikes(List<Motorbike> motorbikes) {
+    public boolean saveMotorbikes(List<Motorbike> motorbikes) {
         MOTORBIKE_REPOSITORY.create(motorbikes);
+        return true;
     }
 
     public void printAll() {
@@ -48,15 +49,17 @@ public class MotorbikeService {
         }
     }
 
-    public void deleteProductByIndex(List<Motorbike> motorbikes, int index) {
+    public boolean deleteProductByIndex(List<Motorbike> motorbikes, int index) {
         final Motorbike motorbike = motorbikes.get(index);
         MOTORBIKE_REPOSITORY.delete(motorbike.getId());
         LOGGER.info("\nMotorbike {} removed from the list.", motorbike);
+        return true;
     }
 
-    public void changeProductByIndex(List<Motorbike> motorbikes, int index, int maxSpeed) {
+    public boolean changeProductByIndex(List<Motorbike> motorbikes, int index, int maxSpeed) {
         final Motorbike motorbike = motorbikes.get(index);
         MOTORBIKE_REPOSITORY.getById(motorbike.getId()).setMaxSpeed(maxSpeed);
         LOGGER.info("\nMotorbike {} has been changed.", motorbike);
+        return true;
     }
 }
