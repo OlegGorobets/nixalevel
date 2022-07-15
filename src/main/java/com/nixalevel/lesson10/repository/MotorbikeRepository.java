@@ -30,13 +30,21 @@ public class MotorbikeRepository implements MotorbikeCrudRepository {
 
     @Override
     public boolean create(Motorbike motorbike) {
-        motorbikes.add(motorbike);
-        return true;
+        if (motorbike == null) {
+            return false;
+        } else {
+            motorbikes.add(motorbike);
+            return true;
+        }
     }
 
     @Override
     public boolean create(List<Motorbike> motorbike) {
-        return motorbikes.addAll(motorbike);
+        if (motorbike == null) {
+            return false;
+        } else {
+            return motorbikes.addAll(motorbike);
+        }
     }
 
     @Override
