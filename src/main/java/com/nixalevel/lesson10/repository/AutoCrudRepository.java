@@ -4,7 +4,7 @@ import com.nixalevel.lesson10.model.Auto;
 
 import java.util.List;
 
-public interface CrudRepository {
+public interface AutoCrudRepository {
     Auto getById(String id);
 
     List<Auto> getAll();

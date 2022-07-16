@@ -2,11 +2,13 @@ package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
 
-public class Auto extends Vehicle{
+public class Auto extends Vehicle {
     private String bodyType;
+    private AutoManufacturer autoManufacturer;
 
-    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType) {
-        super(model, manufacturer, price);
+    public Auto(String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType) {
+        super(model, price);
+        this.autoManufacturer = autoManufacturer;
         this.bodyType = bodyType;
     }
 
@@ -18,6 +20,14 @@ public class Auto extends Vehicle{
         this.bodyType = bodyType;
     }
 
+    public AutoManufacturer getAutoManufacturer() {
+        return autoManufacturer;
+    }
+
+    public void setAutoManufacturer(AutoManufacturer autoManufacturer) {
+        this.autoManufacturer = autoManufacturer;
+    }
+
     @Override
     public String toString() {
         return "Auto{" +
@@ -25,7 +35,7 @@ public class Auto extends Vehicle{
                 ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
-                ", manufacturer=" + manufacturer +
+                ", manufacturer=" + autoManufacturer +
                 '}';
     }
 }
