@@ -3,7 +3,7 @@ package com.nixalevel.lesson10.model;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Vehicle {
+public abstract class Vehicle {
     protected final String id;
     protected String model;
     protected BigDecimal price;
