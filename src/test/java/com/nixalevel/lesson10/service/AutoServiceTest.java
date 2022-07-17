@@ -10,6 +10,9 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyString;
 
 class AutoServiceTest {
 
@@ -23,11 +26,10 @@ class AutoServiceTest {
     void setUp() {
         autoRepository = Mockito.mock(AutoRepository.class);
         target = new AutoService();
-        auto = createSimpleAuto();
     }
 
     private Auto createSimpleAuto() {
-        return new Auto("Model", AutoManufacturer.BMW, BigDecimal.ZERO, "Type");
+        return new Auto("Model", AutoManufacturer.KIA, BigDecimal.ZERO, "Type");
     }
 
     @Test
@@ -50,7 +52,7 @@ class AutoServiceTest {
 
     @Test
     void saveBuses() {
-        final boolean actual = target.saveAutos(List.of(auto));
+        final boolean actual = target.saveAutos(List.of(createSimpleAuto()));
         Assertions.assertTrue(actual);
     }
 
@@ -89,5 +91,41 @@ class AutoServiceTest {
         index = 0;
         final List<Auto> actual = target.createAutos(5);
         Assertions.assertEquals(11, target.changeProductByIndex(actual, 3, "123"));
+    }
+
+    @Test
+    void findOrCreateDefaultAuto() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.of(createSimpleAuto()));
+        Assertions.assertTrue(target.findOrCreateDefaultAuto(anyString()));
+    }
+
+    @Test
+    void findAndCreateDefaultAuto() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.of(createSimpleAuto()));
+        Assertions.assertTrue(target.findOrCreateDefaultAuto(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_success() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.of(createSimpleAuto()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_fail() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void filterByManufacturerById_success() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.of(createSimpleAuto()));
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), AutoManufacturer.KIA));
+    }
+
+    @Test
+    void filterByManufacturerById_fail() {
+        Mockito.when(autoRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), AutoManufacturer.OPEL));
     }
 }

@@ -3,9 +3,12 @@ package com.nixalevel.lesson10.repository;
 import com.nixalevel.lesson10.model.Bus;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BusCrudRepository {
     Bus getById(String id);
+
+    Optional<Bus> findById(String id);
 
     List<Bus> getAll();
 

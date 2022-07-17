@@ -5,6 +5,7 @@ import com.nixalevel.lesson10.model.Motorbike;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class MotorbikeRepository implements MotorbikeCrudRepository {
     private final List<Motorbike> motorbikes;
@@ -21,6 +22,16 @@ public class MotorbikeRepository implements MotorbikeCrudRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Optional<Motorbike> findById(String id) {
+        for (Motorbike motorbike : motorbikes) {
+            if (motorbike.getId().equals(id)) {
+                return Optional.of(motorbike);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

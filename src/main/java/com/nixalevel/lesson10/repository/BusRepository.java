@@ -5,6 +5,7 @@ import com.nixalevel.lesson10.model.Bus;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class BusRepository implements BusCrudRepository {
     private final List<Bus> buses;
@@ -21,6 +22,16 @@ public class BusRepository implements BusCrudRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Optional<Bus> findById(String id) {
+        for (Bus bus : buses) {
+            if (bus.getId().equals(id)) {
+                return Optional.of(bus);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

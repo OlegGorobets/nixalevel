@@ -10,6 +10,9 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyString;
 
 class BusServiceTest {
 
@@ -89,5 +92,41 @@ class BusServiceTest {
         index = 0;
         final List<Bus> actual = target.createBuses(5);
         Assertions.assertEquals(11, target.changeProductByIndex(actual, 3, 11));
+    }
+
+    @Test
+    void findOrCreateDefaultAuto() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.of(createSimpleBus()));
+        Assertions.assertTrue(target.findOrCreateDefaultBus(anyString()));
+    }
+
+    @Test
+    void findAndCreateDefaultAuto() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.of(createSimpleBus()));
+        Assertions.assertTrue(target.findOrCreateDefaultBus(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_success() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.of(createSimpleBus()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_fail() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void filterByManufacturerById_success() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.of(createSimpleBus()));
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), BusManufacturer.MAN));
+    }
+
+    @Test
+    void filterByManufacturerById_fail() {
+        Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), BusManufacturer.ICARUS));
     }
 }

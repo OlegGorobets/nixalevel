@@ -5,6 +5,7 @@ import com.nixalevel.lesson10.model.Auto;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class AutoRepository implements AutoCrudRepository {
     private final List<Auto> autos;
@@ -21,6 +22,16 @@ public class AutoRepository implements AutoCrudRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Optional<Auto> findById(String id) {
+        for (Auto auto : autos) {
+            if (auto.getId().equals(id)) {
+                return Optional.of(auto);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

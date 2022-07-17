@@ -10,6 +10,9 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyString;
 
 class MotorbikeServiceTest {
 
@@ -89,5 +92,41 @@ class MotorbikeServiceTest {
         index = 0;
         final List<Motorbike> actual = target.createMotorbikes(5);
         Assertions.assertEquals(11, target.changeProductByIndex(actual, 3, 300));
+    }
+
+    @Test
+    void findOrCreateDefaultAuto() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertTrue(target.findOrCreateDefaultMotorbike(anyString()));
+    }
+
+    @Test
+    void findAndCreateDefaultAuto() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertTrue(target.findOrCreateDefaultMotorbike(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_success() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void findOrThrowException_fail() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findOrThrowException(anyString()));
+    }
+
+    @Test
+    void filterByManufacturerById_success() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.of(createSimpleMotorbike()));
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), MotorbikeManufacturer.KAWASAKI));
+    }
+
+    @Test
+    void filterByManufacturerById_fail() {
+        Mockito.when(motorbikeRepository.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertFalse(target.filterByManufacturerById(anyString(), MotorbikeManufacturer.YAMAHA));
     }
 }
