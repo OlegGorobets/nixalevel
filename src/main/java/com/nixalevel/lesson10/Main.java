@@ -1,6 +1,7 @@
 package com.nixalevel.lesson10;
 
 import com.nixalevel.lesson10.model.*;
+import com.nixalevel.lesson10.model.vehicle.*;
 import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.BusRepository;
 import com.nixalevel.lesson10.repository.MotorbikeRepository;

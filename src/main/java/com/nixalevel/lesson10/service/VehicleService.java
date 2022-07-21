@@ -1,6 +1,6 @@
 package com.nixalevel.lesson10.service;
 
-import com.nixalevel.lesson10.model.Vehicle;
+import com.nixalevel.lesson10.model.vehicle.Vehicle;
 import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.nixalevel.lesson10.service;
 
-import com.nixalevel.lesson10.model.Motorbike;
-import com.nixalevel.lesson10.model.MotorbikeManufacturer;
+import com.nixalevel.lesson10.model.vehicle.Motorbike;
+import com.nixalevel.lesson10.model.vehicle.MotorbikeManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
