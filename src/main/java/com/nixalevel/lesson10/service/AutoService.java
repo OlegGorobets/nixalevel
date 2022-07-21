@@ -2,35 +2,32 @@ package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.AutoManufacturer;
-import com.nixalevel.lesson10.repository.AutoRepository;
+import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class AutoService {
+public class AutoService extends VehicleService<Auto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
-    private static final AutoRepository AUTO_REPOSITORY = new AutoRepository();
 
-    public List<Auto> createAutos(int count) {
-        final List<Auto> result = new LinkedList<>();
-        for (int i = 0; i < count; i++) {
-            final Auto auto = new Auto(
-                    "Model-" + RANDOM.nextInt(1000),
-                    getRandomManufacturer(),
-                    BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                    "Model-" + RANDOM.nextInt(1000)
-            );
-            result.add(auto);
-            LOGGER.info("Created auto {}", auto.getId());
-        }
-        return result;
+    public AutoService(CrudRepository<Auto> repository) {
+        super(repository);
+    }
+
+    @Override
+    protected Auto create() {
+        return new Auto(
+                "Model-" + RANDOM.nextInt(1000),
+                getRandomManufacturer(),
+                BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
+                "Model-" + RANDOM.nextInt(1000)
+        );
     }
 
     private AutoManufacturer getRandomManufacturer() {
@@ -39,40 +36,22 @@ public class AutoService {
         return values[index];
     }
 
-    public boolean saveAutos(List<Auto> autos) {
-        AUTO_REPOSITORY.create(autos);
-        return true;
-    }
-
-    public void printAll() {
-        for (Auto auto : AUTO_REPOSITORY.getAll()) {
-            LOGGER.info(auto.toString());
-        }
-    }
-
-    public boolean deleteProductByIndex(List<Auto> autos, int index) {
-        final Auto auto = autos.get(index);
-        AUTO_REPOSITORY.delete(auto.getId());
-        LOGGER.info("\nAuto {} removed from the list.", auto);
-        return true;
-    }
-
     public boolean changeProductByIndex(List<Auto> autos, int index, String bodyType) {
         final Auto auto = autos.get(index);
-        AUTO_REPOSITORY.getById(auto.getId()).setBodyType(bodyType);
+        repository.getById(auto.getId()).setBodyType(bodyType);
         LOGGER.info("\nAuto {} has been changed.", auto);
         return true;
     }
 
     public boolean findOrCreateDefaultAuto(String id) {
-        final Auto auto = AUTO_REPOSITORY.findById(id).orElse(createDefaultAuto());
+        final Auto auto = repository.findById(id).orElse(createDefaultAuto());
         LOGGER.info(auto.toString());
         return true;
     }
 
     public boolean findAndCreateDefaultAuto(String id) {
-        final Optional<Auto> autoOptional = AUTO_REPOSITORY.findById(id).or(() -> Optional.of(createDefaultAuto()));
-        autoOptional.ifPresent(auto -> AUTO_REPOSITORY.delete(auto.getId()));
+        final Optional<Auto> autoOptional = repository.findById(id).or(() -> Optional.of(createDefaultAuto()));
+        autoOptional.ifPresent(auto -> repository.delete(auto.getId()));
         autoOptional.orElseGet(() -> {
             LOGGER.info("Auto with id " + "\"" + id + "\"" + " not found");
             return createDefaultAuto();
@@ -83,7 +62,7 @@ public class AutoService {
 
     public boolean findOrThrowException(String id) {
         try {
-            final Auto auto = AUTO_REPOSITORY.findById(id)
+            final Auto auto = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Auto with id " + "\"" + id + "\"" + " not found"));
             LOGGER.info(auto.toString());
         } catch (IllegalArgumentException exception) {
@@ -94,7 +73,7 @@ public class AutoService {
 
     public boolean filterByManufacturerById(String id, AutoManufacturer autoManufacturer) {
         AtomicBoolean isFind = new AtomicBoolean(false);
-        AUTO_REPOSITORY.findById(id)
+        repository.findById(id)
                 .map(Auto::getAutoManufacturer)
                 .filter(manufacturer -> manufacturer.equals(autoManufacturer))
                 .ifPresentOrElse(

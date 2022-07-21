@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class BusRepository implements BusCrudRepository {
+public class BusRepository implements CrudRepository<Bus> {
     private final List<Bus> buses;
 
     public BusRepository() {

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class MotorbikeRepository implements MotorbikeCrudRepository {
+public class MotorbikeRepository implements CrudRepository<Motorbike> {
     private final List<Motorbike> motorbikes;
 
     public MotorbikeRepository() {

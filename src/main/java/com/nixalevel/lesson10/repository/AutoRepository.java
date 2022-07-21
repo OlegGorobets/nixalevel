@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class AutoRepository implements AutoCrudRepository {
+public class AutoRepository implements CrudRepository<Auto> {
     private final List<Auto> autos;
 
     public AutoRepository() {

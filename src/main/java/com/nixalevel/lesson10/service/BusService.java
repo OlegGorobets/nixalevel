@@ -2,7 +2,7 @@ package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
-import com.nixalevel.lesson10.repository.BusRepository;
+import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +13,28 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class BusService {
+public class BusService extends VehicleService<Bus> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BusService.class);
     private static final Random RANDOM = new Random();
-    private static final BusRepository BUS_REPOSITORY = new BusRepository();
+
+    public BusService(CrudRepository<Bus> repository) {
+        super(repository);
+    }
+
+    @Override
+    protected Bus create() {
+        return new Bus(
+                "Model-" + RANDOM.nextInt(1000),
+                getRandomManufacturer(),
+                BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
+                RANDOM.nextInt(20, 40)
+        );
+    }
 
     public List<Bus> createBuses(int count) {
         List<Bus> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-            final Bus bus = new Bus(
-                    "Model-" + RANDOM.nextInt(1000),
-                    getRandomManufacturer(),
-                    BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                    RANDOM.nextInt(20, 40)
-            );
+            final Bus bus = create();
             result.add(bus);
             LOGGER.debug("Created bus {}", bus.getId());
         }
@@ -40,40 +48,33 @@ public class BusService {
     }
 
     public boolean saveBuses(List<Bus> buses) {
-        BUS_REPOSITORY.create(buses);
+        repository.create(buses);
         return true;
     }
 
     public void printAll() {
-        for (Bus bus : BUS_REPOSITORY.getAll()) {
+        for (Bus bus : repository.getAll()) {
             LOGGER.info(bus.toString());
         }
     }
 
-    public boolean deleteProductByIndex(List<Bus> buses, int index) {
-        final Bus bus = buses.get(index);
-        BUS_REPOSITORY.delete(bus.getId());
-        LOGGER.info("\nBus {} removed from the list.", bus);
-        return true;
-    }
-
     public boolean changeProductByIndex(List<Bus> buses, int index, int numberOfSeats) {
         final Bus bus = buses.get(index);
-        BUS_REPOSITORY.getById(bus.getId()).setNumberOfSeats(numberOfSeats);
+        repository.getById(bus.getId()).setNumberOfSeats(numberOfSeats);
         LOGGER.info("\nBus {} has been changed.", bus);
         return true;
     }
 
     public boolean findOrCreateDefaultBus(String id) {
-        final Bus bus = BUS_REPOSITORY.findById(id).orElse(createDefaultBus());
+        final Bus bus = repository.findById(id).orElse(createDefaultBus());
         LOGGER.info(bus.toString());
         return true;
 
     }
 
     public boolean findAndCreateDefaultBus(String id) {
-        final Optional<Bus> busOptional = BUS_REPOSITORY.findById(id).or(() -> Optional.of(createDefaultBus()));
-        busOptional.ifPresent(bus -> BUS_REPOSITORY.delete(bus.getId()));
+        final Optional<Bus> busOptional = repository.findById(id).or(() -> Optional.of(createDefaultBus()));
+        busOptional.ifPresent(bus -> repository.delete(bus.getId()));
         busOptional.orElseGet(() -> {
             LOGGER.info("Bus with id " + "\"" + id + "\"" + " not found");
             return createDefaultBus();
@@ -84,7 +85,7 @@ public class BusService {
 
     public boolean findOrThrowException(String id) {
         try {
-            final Bus bus = BUS_REPOSITORY.findById(id)
+            final Bus bus = repository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Bus with id " + "\"" + id + "\"" + " not found"));
             LOGGER.info(bus.toString());
         } catch (IllegalArgumentException exception) {
@@ -95,7 +96,7 @@ public class BusService {
 
     public boolean filterByManufacturerById(String id, BusManufacturer busManufacturer) {
         AtomicBoolean isFind = new AtomicBoolean(false);
-        BUS_REPOSITORY.findById(id)
+        repository.findById(id)
                 .map(Bus::getBusManufacturer)
                 .filter(manufacturer -> manufacturer.equals(busManufacturer))
                 .ifPresentOrElse(
