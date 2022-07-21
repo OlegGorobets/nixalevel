@@ -1,4 +1,4 @@
-package com.nixalevel.lesson10.model;
+package com.nixalevel.lesson10.model.vehicle;
 
 import java.math.BigDecimal;
 import java.util.UUID;

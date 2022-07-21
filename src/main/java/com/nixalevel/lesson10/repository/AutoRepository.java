@@ -1,13 +1,13 @@
 package com.nixalevel.lesson10.repository;
 
-import com.nixalevel.lesson10.model.Auto;
+import com.nixalevel.lesson10.model.vehicle.Auto;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class AutoRepository implements AutoCrudRepository {
+public class AutoRepository implements CrudRepository<Auto> {
     private final List<Auto> autos;
 
     public AutoRepository() {
