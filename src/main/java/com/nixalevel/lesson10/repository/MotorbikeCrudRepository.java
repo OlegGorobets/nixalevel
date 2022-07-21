@@ -3,9 +3,12 @@ package com.nixalevel.lesson10.repository;
 import com.nixalevel.lesson10.model.Motorbike;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MotorbikeCrudRepository {
     Motorbike getById(String id);
+
+    Optional<Motorbike> findById(String id);
 
     List<Motorbike> getAll();
 

@@ -1,6 +1,5 @@
 package com.nixalevel.lesson10.service;
 
-import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -10,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BusService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BusService.class);
@@ -38,8 +39,9 @@ public class BusService {
         return values[index];
     }
 
-    public void saveBuses(List<Bus> buses) {
+    public boolean saveBuses(List<Bus> buses) {
         BUS_REPOSITORY.create(buses);
+        return true;
     }
 
     public void printAll() {
@@ -48,15 +50,73 @@ public class BusService {
         }
     }
 
-    public void deleteProductByIndex(List<Bus> buses, int index) {
+    public boolean deleteProductByIndex(List<Bus> buses, int index) {
         final Bus bus = buses.get(index);
         BUS_REPOSITORY.delete(bus.getId());
         LOGGER.info("\nBus {} removed from the list.", bus);
+        return true;
     }
 
-    public void changeProductByIndex(List<Bus> buses, int index, int numberOfSeats) {
+    public boolean changeProductByIndex(List<Bus> buses, int index, int numberOfSeats) {
         final Bus bus = buses.get(index);
         BUS_REPOSITORY.getById(bus.getId()).setNumberOfSeats(numberOfSeats);
         LOGGER.info("\nBus {} has been changed.", bus);
+        return true;
+    }
+
+    public boolean findOrCreateDefaultBus(String id) {
+        final Bus bus = BUS_REPOSITORY.findById(id).orElse(createDefaultBus());
+        LOGGER.info(bus.toString());
+        return true;
+
+    }
+
+    public boolean findAndCreateDefaultBus(String id) {
+        final Optional<Bus> busOptional = BUS_REPOSITORY.findById(id).or(() -> Optional.of(createDefaultBus()));
+        busOptional.ifPresent(bus -> BUS_REPOSITORY.delete(bus.getId()));
+        busOptional.orElseGet(() -> {
+            LOGGER.info("Bus with id " + "\"" + id + "\"" + " not found");
+            return createDefaultBus();
+        });
+        LOGGER.info(busOptional.get().toString());
+        return true;
+    }
+
+    public boolean findOrThrowException(String id) {
+        try {
+            final Bus bus = BUS_REPOSITORY.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Bus with id " + "\"" + id + "\"" + " not found"));
+            LOGGER.info(bus.toString());
+        } catch (IllegalArgumentException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+        return true;
+    }
+
+    public boolean filterByManufacturerById(String id, BusManufacturer busManufacturer) {
+        AtomicBoolean isFind = new AtomicBoolean(false);
+        BUS_REPOSITORY.findById(id)
+                .map(Bus::getBusManufacturer)
+                .filter(manufacturer -> manufacturer.equals(busManufacturer))
+                .ifPresentOrElse(
+                        manufacturer -> isFind.set(true),
+                        () -> isFind.set(false)
+                );
+        if (isFind.get()) {
+            LOGGER.info(busManufacturer.toString());
+        } else {
+            LOGGER.info("Bus with manufacturer " + "\"" + busManufacturer + "\"" + " by " +
+                    "\"" + id + "\"" + " not found");
+        }
+        return isFind.get();
+    }
+
+    public Bus createDefaultBus() {
+        return new Bus(
+                "Model-Default",
+                getRandomManufacturer(),
+                BigDecimal.ZERO,
+                0
+        );
     }
 }

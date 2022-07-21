@@ -1,8 +1,6 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.model.Auto;
-import com.nixalevel.lesson10.model.Bus;
-import com.nixalevel.lesson10.model.Motorbike;
+import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
@@ -55,5 +53,19 @@ public class Main {
         BUS_SERVICE.printAll();
         MOTORBIKE_SERVICE.printAll();
 
+        AUTO_SERVICE.findOrCreateDefaultAuto(autos.get(0).getId());
+        AUTO_SERVICE.findAndCreateDefaultAuto(autos.get(0).getId());
+        AUTO_SERVICE.findOrThrowException(autos.get(0).getId());
+        AUTO_SERVICE.filterByManufacturerById(autos.get(0).getId(), AutoManufacturer.KIA);
+
+        BUS_SERVICE.findOrCreateDefaultBus(buses.get(0).getId());
+        BUS_SERVICE.findAndCreateDefaultBus(buses.get(0).getId());
+        BUS_SERVICE.findOrThrowException(buses.get(0).getId());
+        BUS_SERVICE.filterByManufacturerById(buses.get(0).getId(), BusManufacturer.MAN);
+
+        MOTORBIKE_SERVICE.findOrCreateDefaultMotorbike(motorbikes.get(0).getId());
+        MOTORBIKE_SERVICE.findAndCreateDefaultMotorbike(motorbikes.get(0).getId());
+        MOTORBIKE_SERVICE.findOrThrowException(motorbikes.get(0).getId());
+        MOTORBIKE_SERVICE.filterByManufacturerById(motorbikes.get(0).getId(), MotorbikeManufacturer.KAWASAKI);
     }
 }

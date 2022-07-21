@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AutoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
@@ -17,7 +19,7 @@ public class AutoService {
     private static final AutoRepository AUTO_REPOSITORY = new AutoRepository();
 
     public List<Auto> createAutos(int count) {
-        List<Auto> result = new LinkedList<>();
+        final List<Auto> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final Auto auto = new Auto(
                     "Model-" + RANDOM.nextInt(1000),
@@ -37,8 +39,9 @@ public class AutoService {
         return values[index];
     }
 
-    public void saveAutos(List<Auto> autos) {
+    public boolean saveAutos(List<Auto> autos) {
         AUTO_REPOSITORY.create(autos);
+        return true;
     }
 
     public void printAll() {
@@ -47,15 +50,72 @@ public class AutoService {
         }
     }
 
-    public void deleteProductByIndex(List<Auto> autos, int index) {
+    public boolean deleteProductByIndex(List<Auto> autos, int index) {
         final Auto auto = autos.get(index);
         AUTO_REPOSITORY.delete(auto.getId());
         LOGGER.info("\nAuto {} removed from the list.", auto);
+        return true;
     }
 
-    public void changeProductByIndex(List<Auto> autos, int index, String bodyType) {
+    public boolean changeProductByIndex(List<Auto> autos, int index, String bodyType) {
         final Auto auto = autos.get(index);
         AUTO_REPOSITORY.getById(auto.getId()).setBodyType(bodyType);
         LOGGER.info("\nAuto {} has been changed.", auto);
+        return true;
+    }
+
+    public boolean findOrCreateDefaultAuto(String id) {
+        final Auto auto = AUTO_REPOSITORY.findById(id).orElse(createDefaultAuto());
+        LOGGER.info(auto.toString());
+        return true;
+    }
+
+    public boolean findAndCreateDefaultAuto(String id) {
+        final Optional<Auto> autoOptional = AUTO_REPOSITORY.findById(id).or(() -> Optional.of(createDefaultAuto()));
+        autoOptional.ifPresent(auto -> AUTO_REPOSITORY.delete(auto.getId()));
+        autoOptional.orElseGet(() -> {
+            LOGGER.info("Auto with id " + "\"" + id + "\"" + " not found");
+            return createDefaultAuto();
+        });
+        LOGGER.info(autoOptional.get().toString());
+        return true;
+    }
+
+    public boolean findOrThrowException(String id) {
+        try {
+            final Auto auto = AUTO_REPOSITORY.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Auto with id " + "\"" + id + "\"" + " not found"));
+            LOGGER.info(auto.toString());
+        } catch (IllegalArgumentException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+        return true;
+    }
+
+    public boolean filterByManufacturerById(String id, AutoManufacturer autoManufacturer) {
+        AtomicBoolean isFind = new AtomicBoolean(false);
+        AUTO_REPOSITORY.findById(id)
+                .map(Auto::getAutoManufacturer)
+                .filter(manufacturer -> manufacturer.equals(autoManufacturer))
+                .ifPresentOrElse(
+                        manufacturer -> isFind.set(true),
+                        () -> isFind.set(false)
+                );
+        if (isFind.get()) {
+            LOGGER.info(autoManufacturer.toString());
+        } else {
+            LOGGER.info("Auto with manufacturer " + "\"" + autoManufacturer + "\"" + " by " +
+                    "\"" + id + "\"" + " not found");
+        }
+        return isFind.get();
+    }
+
+    public Auto createDefaultAuto() {
+        return new Auto(
+                "Model-Default",
+                getRandomManufacturer(),
+                BigDecimal.ZERO,
+                "Model-Default"
+        );
     }
 }
