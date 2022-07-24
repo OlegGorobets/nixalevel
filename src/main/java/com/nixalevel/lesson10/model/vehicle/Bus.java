@@ -6,11 +6,17 @@ public class Bus extends Vehicle {
 
     private int numberOfSeats;
     private BusManufacturer busManufacturer;
+    private static int vehicleCount;
+
+    public int getVehicleCount() {
+        return vehicleCount;
+    }
 
     public Bus(String model, BusManufacturer busManufacturer, BigDecimal price, int numberOfSeats) {
         super(model, price);
         this.busManufacturer = busManufacturer;
         this.numberOfSeats = numberOfSeats;
+        vehicleCount++;
     }
 
     public int getNumberOfSeats() {

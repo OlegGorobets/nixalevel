@@ -6,11 +6,17 @@ public class Motorbike extends Vehicle {
 
     private int maxSpeed;
     private MotorbikeManufacturer motorbikeManufacturer;
+    private static int vehicleCount;
+
+    public int getVehicleCount() {
+        return vehicleCount;
+    }
 
     public Motorbike(String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed) {
         super(model, price);
         this.motorbikeManufacturer = motorbikeManufacturer;
         this.maxSpeed = maxSpeed;
+        vehicleCount++;
     }
 
     public int getMaxSpeed() {
