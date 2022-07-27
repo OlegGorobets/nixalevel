@@ -1,4 +1,4 @@
-package com.nixalevel.lesson10.model;
+package com.nixalevel.lesson10.utility;
 
 import com.nixalevel.lesson10.model.vehicle.Vehicle;
 import org.slf4j.Logger;
@@ -39,8 +39,7 @@ public class Container<T extends Vehicle> {
         }
     }
 
-    public void increasePrice() {
-        Number x = RANDOM.nextInt(Integer.MAX_VALUE);
+    public void increasePrice(Number x) {
         for (T vehicle : vehicles) {
             BigDecimal prise = vehicle.getPrice();
             vehicle.setPrice(prise.add(BigDecimal.valueOf(x.intValue())));

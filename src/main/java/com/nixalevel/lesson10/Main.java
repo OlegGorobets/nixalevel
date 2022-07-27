@@ -1,6 +1,5 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.model.vehicle.*;
 import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -8,6 +7,7 @@ import com.nixalevel.lesson10.repository.MotorbikeRepository;
 import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
+import com.nixalevel.lesson10.utility.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +83,6 @@ public class Main {
         CONTAINER.add(new Motorbike("MotorbikeContainer", MotorbikeManufacturer.YAMAHA, BigDecimal.TEN, 200));
         CONTAINER.printAll();
         CONTAINER.applyDiscount();
-        CONTAINER.increasePrice();
+        CONTAINER.increasePrice(11);
     }
 }
