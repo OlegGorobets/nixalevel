@@ -1,13 +1,13 @@
 package com.nixalevel.lesson10.repository;
 
-import com.nixalevel.lesson10.model.Motorbike;
+import com.nixalevel.lesson10.model.vehicle.Motorbike;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class MotorbikeRepository implements MotorbikeCrudRepository {
+public class MotorbikeRepository implements CrudRepository<Motorbike> {
     private final List<Motorbike> motorbikes;
 
     public MotorbikeRepository() {

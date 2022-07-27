@@ -1,13 +1,13 @@
 package com.nixalevel.lesson10.repository;
 
-import com.nixalevel.lesson10.model.Bus;
+import com.nixalevel.lesson10.model.vehicle.Bus;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class BusRepository implements BusCrudRepository {
+public class BusRepository implements CrudRepository<Bus> {
     private final List<Bus> buses;
 
     public BusRepository() {
