@@ -1,4 +1,4 @@
-package com.nixalevel.lesson10.model.vehicle;
+package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -62,6 +62,16 @@ public abstract class Vehicle {
         @Override
         public int compare(Vehicle o1, Vehicle o2) {
             return o1.getVehicleCount() - (o2.getVehicleCount());
+        }
+    }
+
+    public static class Sort implements Comparator<Vehicle> {
+
+        @Override
+        public int compare(Vehicle o1, Vehicle o2) {
+            int resSortByPrice = o2.getPrice().compareTo(o1.getPrice());
+            System.out.println(resSortByPrice);
+            return resSortByPrice;
         }
     }
 }

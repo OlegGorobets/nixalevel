@@ -1,6 +1,6 @@
-package com.nixalevel.lesson10.model;
+package com.nixalevel.lesson10.utility;
 
-import com.nixalevel.lesson10.model.vehicle.Vehicle;
+import com.nixalevel.lesson10.model.Vehicle;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,8 +69,6 @@ public class Garage<T extends Vehicle> implements Iterable<T> {
 
     public String set(String restyling, T vehicle) {
         Node<T> temp = first;
-        Node<T> before = temp.prev;
-        Node<T> next = temp.next;
         while (temp != null) {
             if (temp.restyling.equals(restyling)) {
                 temp.item = vehicle;

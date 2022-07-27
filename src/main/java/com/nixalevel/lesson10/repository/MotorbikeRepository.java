@@ -1,6 +1,6 @@
 package com.nixalevel.lesson10.repository;
 
-import com.nixalevel.lesson10.model.vehicle.Motorbike;
+import com.nixalevel.lesson10.model.Motorbike;
 
 import java.util.Iterator;
 import java.util.LinkedList;
