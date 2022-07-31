@@ -158,12 +158,12 @@ public class Main {
         }*/
 
         /* UI */
-        /*final Action[] actions = Action.values();
+        final Action[] actions = Action.values();
         final List<String> names = getNames(actions);
         Command command;
         do {
             command = executeCommand(actions, names);
-        } while (command != null);*/
+        } while (command != null);
 
         /* BinaryTree */
         BinaryTree<Vehicle> binaryTree = new BinaryTree<>();
@@ -181,7 +181,7 @@ public class Main {
     }
 
     /* UI */
-    /*private static List<String> getNames(Action[] actions) {
+    private static List<String> getNames(Action[] actions) {
         final List<String> names = new ArrayList<>(actions.length);
         for (Action action : actions) {
             names.add(action.getName());
@@ -193,5 +193,5 @@ public class Main {
         int userInput = UserInputUtil.getUserInput("What you want:", names);
         final Action action = actions[userInput];
         return action.execute();
-    }*/
+    }
 }
