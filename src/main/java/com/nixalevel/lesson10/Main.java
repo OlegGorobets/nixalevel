@@ -1,5 +1,7 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.command.Action;
+import com.nixalevel.lesson10.command.Command;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -8,12 +10,16 @@ import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
 import com.nixalevel.lesson10.service.VehicleService;
+import com.nixalevel.lesson10.utility.BinaryTree;
 import com.nixalevel.lesson10.utility.Container;
 import com.nixalevel.lesson10.utility.Garage;
+import com.nixalevel.lesson10.utility.UserInputUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,50 +35,49 @@ public class Main {
 
     public static void main(String[] args) {
         /* Create all types of products */
-        final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
-        final List<Bus> buses = BUS_SERVICE.createBuses(5);
-        final List<Motorbike> motorbikes = MOTORBIKE_SERVICE.createMotorbikes(5);
+        /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
+        final List<Bus> buses = BUS_SERVICE.createVehicles(5);
+        final List<Motorbike> motorbikes = MOTORBIKE_SERVICE.createVehicles(5);
         final List<Vehicle> vehicles = VEHICLE_SERVICE.createVehicles(5);
 
         Auto auto = new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer");
-        Auto auto1 = new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer");
         Bus bus = new Bus("AutoContainer", BusManufacturer.MAN, BigDecimal.TEN, 15);
         Motorbike motorbike = new Motorbike("MotorbikeContainer", MotorbikeManufacturer.YAMAHA, BigDecimal.TEN, 200);
 
         AUTO_SERVICE.saveVehicles(autos);
         BUS_SERVICE.saveBuses(buses);
-        MOTORBIKE_SERVICE.saveMotorbikes(motorbikes);
+        MOTORBIKE_SERVICE.saveMotorbikes(motorbikes);*/
 
         /* Display in console */
-        LOGGER.info("\nCreate all types of products");
+        /*LOGGER.info("\nCreate all types of products");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
-        MOTORBIKE_SERVICE.printAll();
+        MOTORBIKE_SERVICE.printAll();*/
 
         /* Change one specific product */
-        AUTO_SERVICE.changeProductByIndex(autos, 1, "Model-Test123");
+        /*AUTO_SERVICE.changeProductByIndex(autos, 1, "Model-Test123");
         BUS_SERVICE.changeProductByIndex(buses, 0, 10);
-        MOTORBIKE_SERVICE.changeProductByIndex(motorbikes, 1, 100);
+        MOTORBIKE_SERVICE.changeProductByIndex(motorbikes, 1, 100);*/
 
         /* Display change in console */
-        LOGGER.info("\nChange one specific product");
+        /*LOGGER.info("\nChange one specific product");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
-        MOTORBIKE_SERVICE.printAll();
+        MOTORBIKE_SERVICE.printAll();*/
 
         /* Delete a specific product */
-        AUTO_SERVICE.deleteProductByIndex(autos, 0);
+        /*AUTO_SERVICE.deleteProductByIndex(autos, 0);
         BUS_SERVICE.deleteProductByIndex(buses, 1);
-        MOTORBIKE_SERVICE.deleteProductByIndex(motorbikes, 0);
+        MOTORBIKE_SERVICE.deleteProductByIndex(motorbikes, 0);*/
 
         /* Display change in console */
-        LOGGER.info("\nDelete a specific product");
+        /*LOGGER.info("\nDelete a specific product");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
-        MOTORBIKE_SERVICE.printAll();
+        MOTORBIKE_SERVICE.printAll();*/
 
         /* Optional */
-        LOGGER.info("\nOptional");
+        /*LOGGER.info("\nOptional");
         AUTO_SERVICE.findOrCreateDefaultAuto(autos.get(0).getId());
         AUTO_SERVICE.findAndCreateDefaultAuto(autos.get(0).getId());
         AUTO_SERVICE.findOrThrowException(autos.get(0).getId());
@@ -86,19 +91,19 @@ public class Main {
         MOTORBIKE_SERVICE.findOrCreateDefaultMotorbike(motorbikes.get(0).getId());
         MOTORBIKE_SERVICE.findAndCreateDefaultMotorbike(motorbikes.get(0).getId());
         MOTORBIKE_SERVICE.findOrThrowException(motorbikes.get(0).getId());
-        MOTORBIKE_SERVICE.filterByManufacturerById(motorbikes.get(0).getId(), MotorbikeManufacturer.KAWASAKI);
+        MOTORBIKE_SERVICE.filterByManufacturerById(motorbikes.get(0).getId(), MotorbikeManufacturer.KAWASAKI);*/
 
         /* Container */
-        LOGGER.info("\nContainer");
+        /*LOGGER.info("\nContainer");
         CONTAINER.add(new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer"));
         CONTAINER.add(new Bus("AutoContainer", BusManufacturer.MAN, BigDecimal.TEN, 15));
         CONTAINER.add(new Motorbike("MotorbikeContainer", MotorbikeManufacturer.YAMAHA, BigDecimal.TEN, 200));
         CONTAINER.printAll();
         CONTAINER.applyDiscount();
-        CONTAINER.increasePrice(11);
+        CONTAINER.increasePrice(11);*/
 
         /* Garage */
-        LOGGER.info("\nGarage");
+        /*LOGGER.info("\nGarage");
         GARAGE.add(auto);
         GARAGE.add(bus);
         GARAGE.add(motorbike);
@@ -118,11 +123,11 @@ public class Main {
         }
         LOGGER.info(stringBuilder.toString());
         LOGGER.info(GARAGE.remove(GARAGE.getRestyling(motorbike)));
-        LOGGER.info(GARAGE.printAll());
+        LOGGER.info(GARAGE.printAll());*/
 
         /* Comparator */
-        LOGGER.info("\nComparator");
-        vehicles.addAll(MOTORBIKE_SERVICE.createMotorbikes(5));
+        /*LOGGER.info("\nComparator");
+        vehicles.addAll(MOTORBIKE_SERVICE.createVehicles(5));
         for (Vehicle vehicle : vehicles) {
             LOGGER.info(vehicle.toString());
         }
@@ -150,6 +155,43 @@ public class Main {
         vehicles.sort(new Vehicle.SortByPrice());
         for (Vehicle vehicle : vehicles) {
             LOGGER.info(vehicle.toString());
-        }
+        }*/
+
+        /* UI */
+        /*final Action[] actions = Action.values();
+        final List<String> names = getNames(actions);
+        Command command;
+        do {
+            command = executeCommand(actions, names);
+        } while (command != null);*/
+
+        /* BinaryTree */
+        BinaryTree<Vehicle> binaryTree = new BinaryTree<>();
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(6), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(4), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(8), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(3), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(5), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(7), "TEST"));
+        binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(9), "TEST"));
+
+        binaryTree.print();
+        binaryTree.sumTree();
+
     }
+
+    /* UI */
+    /*private static List<String> getNames(Action[] actions) {
+        final List<String> names = new ArrayList<>(actions.length);
+        for (Action action : actions) {
+            names.add(action.getName());
+        }
+        return names;
+    }
+
+    private static Command executeCommand(Action[] actions, List<String> names) {
+        int userInput = UserInputUtil.getUserInput("What you want:", names);
+        final Action action = actions[userInput];
+        return action.execute();
+    }*/
 }

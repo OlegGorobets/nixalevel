@@ -2,12 +2,12 @@ package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
+import com.nixalevel.lesson10.repository.BusRepository;
 import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -17,8 +17,17 @@ public class BusService extends VehicleService<Bus> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BusService.class);
     private static final Random RANDOM = new Random();
 
+    private static BusService instance;
+
     public BusService(CrudRepository<Bus> repository) {
         super(repository);
+    }
+
+    public static BusService getInstance() {
+        if (instance == null) {
+            instance = new BusService(BusRepository.getInstance());
+        }
+        return instance;
     }
 
     @Override
@@ -29,16 +38,6 @@ public class BusService extends VehicleService<Bus> {
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
                 RANDOM.nextInt(20, 40)
         );
-    }
-
-    public List<Bus> createBuses(int count) {
-        List<Bus> result = new LinkedList<>();
-        for (int i = 0; i < count; i++) {
-            final Bus bus = create();
-            result.add(bus);
-            LOGGER.debug("Created bus {}", bus.getId());
-        }
-        return result;
     }
 
     private BusManufacturer getRandomManufacturer() {
@@ -62,6 +61,14 @@ public class BusService extends VehicleService<Bus> {
         final Bus bus = buses.get(index);
         repository.getById(bus.getId()).setNumberOfSeats(numberOfSeats);
         LOGGER.info("\nBus {} has been changed.", bus);
+        return true;
+    }
+
+    public boolean change(int index, int numberOfSeats) {
+        List<Bus> vehicleList = repository.getAll();
+        vehicleList.get(index).setNumberOfSeats(numberOfSeats);
+        repository.update(vehicleList.get(index));
+        LOGGER.info("Changed.");
         return true;
     }
 

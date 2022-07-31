@@ -3,11 +3,11 @@ package com.nixalevel.lesson10.service;
 import com.nixalevel.lesson10.model.Motorbike;
 import com.nixalevel.lesson10.model.MotorbikeManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
+import com.nixalevel.lesson10.repository.MotorbikeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -17,8 +17,17 @@ public class MotorbikeService extends VehicleService<Motorbike> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MotorbikeService.class);
     private static final Random RANDOM = new Random();
 
+    private static MotorbikeService instance;
+
     public MotorbikeService(CrudRepository<Motorbike> repository) {
         super(repository);
+    }
+
+    public static MotorbikeService getInstance() {
+        if (instance == null) {
+            instance = new MotorbikeService(MotorbikeRepository.getInstance());
+        }
+        return instance;
     }
 
     @Override
@@ -29,16 +38,6 @@ public class MotorbikeService extends VehicleService<Motorbike> {
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
                 RANDOM.nextInt(200, 300)
         );
-    }
-
-    public List<Motorbike> createMotorbikes(int count) {
-        List<Motorbike> result = new LinkedList<>();
-        for (int i = 0; i < count; i++) {
-            final Motorbike motorbike = create();
-            result.add(motorbike);
-            LOGGER.debug("Created motorbike {}", motorbike.getId());
-        }
-        return result;
     }
 
     private MotorbikeManufacturer getRandomManufacturer() {
@@ -62,6 +61,14 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         final Motorbike motorbike = motorbikes.get(index);
         repository.getById(motorbike.getId()).setMaxSpeed(maxSpeed);
         LOGGER.info("\nMotorbike {} has been changed.", motorbike);
+        return true;
+    }
+
+    public boolean change(int index, int maxSpeed) {
+        List<Motorbike> vehicleList = repository.getAll();
+        vehicleList.get(index).setMaxSpeed(maxSpeed);
+        repository.update(vehicleList.get(index));
+        LOGGER.info("Changed.");
         return true;
     }
 

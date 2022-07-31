@@ -10,8 +10,17 @@ import java.util.Optional;
 public class BusRepository implements CrudRepository<Bus> {
     private final List<Bus> buses;
 
+    private static BusRepository instance;
+
     public BusRepository() {
         buses = new LinkedList<>();
+    }
+
+    public static BusRepository getInstance() {
+        if (instance == null) {
+            instance = new BusRepository();
+        }
+        return instance;
     }
 
     @Override

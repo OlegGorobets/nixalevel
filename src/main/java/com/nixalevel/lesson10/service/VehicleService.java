@@ -21,6 +21,7 @@ public abstract class VehicleService<T extends Vehicle> {
         for (int i = 0; i < count; i++) {
             final T vehicle = create();
             result.add(vehicle);
+            repository.create(vehicle);
             LOGGER.info("Created " + vehicle.getClass().getSimpleName() + " {}", vehicle.getId());
         }
         return result;
@@ -28,9 +29,12 @@ public abstract class VehicleService<T extends Vehicle> {
 
     protected abstract T create();
 
-    public boolean saveVehicles(List<T> vehicle) {
-        repository.create(vehicle);
-        return true;
+    public void print() {
+        List<T> vehicleList = repository.getAll();
+        for (int i = 0; i < vehicleList.size(); i++) {
+            System.out.printf("%d) %s%n", i, vehicleList.get(i));
+        }
+        LOGGER.info("Printed.");
     }
 
     public void printAll() {
@@ -43,6 +47,13 @@ public abstract class VehicleService<T extends Vehicle> {
         final T vehicle = vehicles.get(index);
         repository.delete(vehicle.getId());
         LOGGER.info("\n" + vehicle.getClass().getSimpleName() + " {} removed from the list.", vehicle);
+        return true;
+    }
+
+    public boolean remove(int index) {
+        List<T> vehicleList = repository.getAll();
+        vehicleList.remove(index);
+        LOGGER.info("Removed.");
         return true;
     }
 }

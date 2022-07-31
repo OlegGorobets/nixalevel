@@ -12,7 +12,7 @@ public class Auto extends Vehicle {
     }
 
     public Auto(String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType) {
-        super(model, price);
+        super(model, price, VehicleType.AUTO);
         this.autoManufacturer = autoManufacturer;
         this.bodyType = bodyType;
         vehicleCount++;
