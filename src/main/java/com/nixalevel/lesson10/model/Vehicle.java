@@ -9,15 +9,17 @@ public abstract class Vehicle {
     protected String model;
     protected BigDecimal price;
     protected static int vehicleCount;
+    protected VehicleType type;
 
     public int getVehicleCount() {
         return vehicleCount;
     }
 
-    protected Vehicle(String model, BigDecimal price) {
+    protected Vehicle(String model, BigDecimal price, VehicleType type) {
         this.id = UUID.randomUUID().toString();
         this.model = model;
         this.price = price;
+        this.type = type;
         vehicleCount++;
     }
 

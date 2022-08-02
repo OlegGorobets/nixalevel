@@ -2,6 +2,7 @@ package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.AutoManufacturer;
+import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,17 @@ public class AutoService extends VehicleService<Auto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
 
+    private static AutoService instance;
+
     public AutoService(CrudRepository<Auto> repository) {
         super(repository);
+    }
+
+    public static AutoService getInstance() {
+        if (instance == null) {
+            instance = new AutoService(AutoRepository.getInstance());
+        }
+        return instance;
     }
 
     @Override
@@ -40,6 +50,14 @@ public class AutoService extends VehicleService<Auto> {
         final Auto auto = autos.get(index);
         repository.getById(auto.getId()).setBodyType(bodyType);
         LOGGER.info("\nAuto {} has been changed.", auto);
+        return true;
+    }
+
+    public boolean change(int index, String bodyType) {
+        List<Auto> vehicleList = repository.getAll();
+        vehicleList.get(index).setBodyType(bodyType);
+        repository.update(vehicleList.get(index));
+        LOGGER.info("Changed.");
         return true;
     }
 

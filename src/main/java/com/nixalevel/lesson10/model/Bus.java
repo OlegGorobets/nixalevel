@@ -13,7 +13,7 @@ public class Bus extends Vehicle {
     }
 
     public Bus(String model, BusManufacturer busManufacturer, BigDecimal price, int numberOfSeats) {
-        super(model, price);
+        super(model, price, VehicleType.BUS);
         this.busManufacturer = busManufacturer;
         this.numberOfSeats = numberOfSeats;
         vehicleCount++;

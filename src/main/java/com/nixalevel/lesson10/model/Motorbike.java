@@ -13,7 +13,7 @@ public class Motorbike extends Vehicle {
     }
 
     public Motorbike(String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed) {
-        super(model, price);
+        super(model, price, VehicleType.MOTORBIKE);
         this.motorbikeManufacturer = motorbikeManufacturer;
         this.maxSpeed = maxSpeed;
         vehicleCount++;
