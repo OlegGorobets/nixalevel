@@ -56,4 +56,8 @@ public abstract class VehicleService<T extends Vehicle> {
         LOGGER.info("Removed.");
         return true;
     }
+
+    public List<T> getAll() {
+        return repository.getAll();
+    }
 }

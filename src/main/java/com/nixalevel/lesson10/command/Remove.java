@@ -1,9 +1,9 @@
 package com.nixalevel.lesson10.command;
 
-import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.AutoRepository;
-import com.nixalevel.lesson10.repository.BusRepository;
-import com.nixalevel.lesson10.repository.MotorbikeRepository;
+import com.nixalevel.lesson10.model.Auto;
+import com.nixalevel.lesson10.model.Bus;
+import com.nixalevel.lesson10.model.Motorbike;
+import com.nixalevel.lesson10.model.VehicleType;
 import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
@@ -13,19 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Remove implements Command{
+public class Remove implements Command {
     private static final AutoService AUTO_SERVICE = AutoService.getInstance();
     private static final BusService BUS_SERVICE = BusService.getInstance();
     private static final MotorbikeService MOTORBIKE_SERVICE = MotorbikeService.getInstance();
 
-    private static final AutoRepository AUTO_REPOSITORY = AutoRepository.getInstance();
-    private static final BusRepository BUS_REPOSITORY = BusRepository.getInstance();
-    private static final MotorbikeRepository MOTORBIKE_REPOSITORY = MotorbikeRepository.getInstance();
     @Override
     public void execute() {
-        final List<String> autoList = AUTO_REPOSITORY.getAll().stream().map(Auto::toString).collect(Collectors.toList());
-        final List<String> busList = BUS_REPOSITORY.getAll().stream().map(Bus::toString).collect(Collectors.toList());
-        final List<String> motorbikeList = MOTORBIKE_REPOSITORY.getAll().stream().map(Motorbike::toString).collect(Collectors.toList());
+        final List<String> autoList = AUTO_SERVICE.getAll().stream().map(Auto::toString).collect(Collectors.toList());
+        final List<String> busList = BUS_SERVICE.getAll().stream().map(Bus::toString).collect(Collectors.toList());
+        final List<String> motorbikeList = MOTORBIKE_SERVICE.getAll().stream().map(Motorbike::toString).collect(Collectors.toList());
 
         final VehicleType[] values = VehicleType.values();
         final List<String> names = getNames(values);
@@ -33,9 +30,11 @@ public class Remove implements Command{
         final VehicleType value = values[userInput];
 
         switch (value) {
-            case AUTO -> AUTO_SERVICE.remove(UserInputUtil.getUserInput("What you want to remove from Auto:", autoList));
+            case AUTO ->
+                    AUTO_SERVICE.remove(UserInputUtil.getUserInput("What you want to remove from Auto:", autoList));
             case BUS -> BUS_SERVICE.remove(UserInputUtil.getUserInput("What you want to remove from Bus:", busList));
-            case MOTORBIKE -> MOTORBIKE_SERVICE.remove(UserInputUtil.getUserInput("What you want to remove from Motorbike:", motorbikeList));
+            case MOTORBIKE ->
+                    MOTORBIKE_SERVICE.remove(UserInputUtil.getUserInput("What you want to remove from Motorbike:", motorbikeList));
             default -> throw new IllegalArgumentException("Cannot change " + value);
         }
     }
