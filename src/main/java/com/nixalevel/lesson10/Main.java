@@ -1,17 +1,20 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.model.vehicle.*;
+import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.BusRepository;
 import com.nixalevel.lesson10.repository.MotorbikeRepository;
 import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
+import com.nixalevel.lesson10.service.VehicleService;
 import com.nixalevel.lesson10.utility.Container;
+import com.nixalevel.lesson10.utility.Garage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -19,13 +22,22 @@ public class Main {
     private static final AutoService AUTO_SERVICE = new AutoService(new AutoRepository());
     private static final BusService BUS_SERVICE = new BusService(new BusRepository());
     private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService(new MotorbikeRepository());
+    private static final VehicleService VEHICLE_SERVICE = new AutoService(new AutoRepository());
     private static final Container<Vehicle> CONTAINER = new Container<>();
+
+    private static final Garage<Vehicle> GARAGE = new Garage<>();
 
     public static void main(String[] args) {
         /* Create all types of products */
         final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createBuses(5);
         final List<Motorbike> motorbikes = MOTORBIKE_SERVICE.createMotorbikes(5);
+        final List<Vehicle> vehicles = VEHICLE_SERVICE.createVehicles(5);
+
+        Auto auto = new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer");
+        Auto auto1 = new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer");
+        Bus bus = new Bus("AutoContainer", BusManufacturer.MAN, BigDecimal.TEN, 15);
+        Motorbike motorbike = new Motorbike("MotorbikeContainer", MotorbikeManufacturer.YAMAHA, BigDecimal.TEN, 200);
 
         AUTO_SERVICE.saveVehicles(autos);
         BUS_SERVICE.saveBuses(buses);
@@ -84,5 +96,60 @@ public class Main {
         CONTAINER.printAll();
         CONTAINER.applyDiscount();
         CONTAINER.increasePrice(11);
+
+        /* Garage */
+        LOGGER.info("\nGarage");
+        GARAGE.add(auto);
+        GARAGE.add(bus);
+        GARAGE.add(motorbike);
+        LOGGER.info(GARAGE.printAll());
+        GARAGE.search(GARAGE.getRestyling(auto));
+        LOGGER.info(GARAGE.search(GARAGE.getRestyling(auto)));
+        LOGGER.info(GARAGE.getFirst());
+        LOGGER.info(GARAGE.getLast());
+        LOGGER.info(GARAGE.set(GARAGE.getRestyling(auto),
+                new Auto("TEST", AutoManufacturer.BMW, BigDecimal.ZERO,"qwer")));
+        LOGGER.info(GARAGE.getRestylingCount());
+        LOGGER.info(GARAGE.printAll());
+        LOGGER.info("\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Vehicle vehicle : GARAGE) {
+            stringBuilder.append(vehicle.toString()).append("\n");
+        }
+        LOGGER.info(stringBuilder.toString());
+        LOGGER.info(GARAGE.remove(GARAGE.getRestyling(motorbike)));
+        LOGGER.info(GARAGE.printAll());
+
+        /* Comparator */
+        LOGGER.info("\nComparator");
+        vehicles.addAll(MOTORBIKE_SERVICE.createMotorbikes(5));
+        for (Vehicle vehicle : vehicles) {
+            LOGGER.info(vehicle.toString());
+        }
+        LOGGER.info("\n");
+        vehicles.sort(new Vehicle.SortByPrice());
+        for (Vehicle vehicle : vehicles) {
+            LOGGER.info(vehicle.toString());
+        }
+        LOGGER.info("\n");
+        vehicles.addAll(autos);
+        vehicles.addAll(buses);
+        vehicles.addAll(motorbikes);
+        for (Vehicle vehicle : vehicles) {
+            LOGGER.info(vehicle.toString());
+        }
+
+        Comparator<Vehicle> sortByPrice = new Vehicle.SortByPrice();
+        Comparator<Vehicle> sortByName = new Vehicle.SortByName();
+        Comparator<Vehicle> sortByQuantity = new Vehicle.SortByQuantity();
+        Comparator<Vehicle> vehicleComparator = sortByPrice.thenComparing(sortByName).thenComparing(sortByQuantity);
+
+        vehicles.sort(vehicleComparator);
+
+        LOGGER.info("\n");
+        vehicles.sort(new Vehicle.SortByPrice());
+        for (Vehicle vehicle : vehicles) {
+            LOGGER.info(vehicle.toString());
+        }
     }
 }

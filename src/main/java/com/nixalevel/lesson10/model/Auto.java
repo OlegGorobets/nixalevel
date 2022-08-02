@@ -1,15 +1,21 @@
-package com.nixalevel.lesson10.model.vehicle;
+package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
 
 public class Auto extends Vehicle {
     private String bodyType;
     private AutoManufacturer autoManufacturer;
+    private static int vehicleCount;
+
+    public int getVehicleCount() {
+        return vehicleCount;
+    }
 
     public Auto(String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType) {
         super(model, price);
         this.autoManufacturer = autoManufacturer;
         this.bodyType = bodyType;
+        vehicleCount++;
     }
 
     public String getBodyType() {

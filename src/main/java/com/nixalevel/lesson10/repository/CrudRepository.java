@@ -1,6 +1,6 @@
 package com.nixalevel.lesson10.repository;
 
-import com.nixalevel.lesson10.model.vehicle.Vehicle;
+import com.nixalevel.lesson10.model.Vehicle;
 
 import java.util.List;
 import java.util.Optional;

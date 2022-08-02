@@ -1,6 +1,6 @@
 package com.nixalevel.lesson10.utility;
 
-import com.nixalevel.lesson10.model.vehicle.Vehicle;
+import com.nixalevel.lesson10.model.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

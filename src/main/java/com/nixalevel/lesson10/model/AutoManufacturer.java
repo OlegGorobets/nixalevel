@@ -1,4 +1,4 @@
-package com.nixalevel.lesson10.model.vehicle;
+package com.nixalevel.lesson10.model;
 
 public enum AutoManufacturer {
     KIA, BMW, ZAZ, OPEL

@@ -1,7 +1,7 @@
 package com.nixalevel.lesson10.service;
 
-import com.nixalevel.lesson10.model.vehicle.Bus;
-import com.nixalevel.lesson10.model.vehicle.BusManufacturer;
+import com.nixalevel.lesson10.model.Bus;
+import com.nixalevel.lesson10.model.BusManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
