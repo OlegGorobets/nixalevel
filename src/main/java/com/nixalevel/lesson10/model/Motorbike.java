@@ -1,6 +1,7 @@
 package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Motorbike extends Vehicle {
 
@@ -14,6 +15,14 @@ public class Motorbike extends Vehicle {
 
     public Motorbike(String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed) {
         super(model, price, VehicleType.MOTORBIKE);
+        this.motorbikeManufacturer = motorbikeManufacturer;
+        this.maxSpeed = maxSpeed;
+        vehicleCount++;
+    }
+
+    public Motorbike(String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed,
+                     List<String> details) {
+        super(model, price, VehicleType.MOTORBIKE, details);
         this.motorbikeManufacturer = motorbikeManufacturer;
         this.maxSpeed = maxSpeed;
         vehicleCount++;
@@ -43,6 +52,7 @@ public class Motorbike extends Vehicle {
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", motorbikeManufacturer=" + motorbikeManufacturer +
+                ", details=" + details +
                 '}';
     }
 }

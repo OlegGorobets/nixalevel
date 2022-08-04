@@ -46,11 +46,6 @@ public class BusService extends VehicleService<Bus> {
         return values[index];
     }
 
-    public boolean saveBuses(List<Bus> buses) {
-        repository.create(buses);
-        return true;
-    }
-
     public void printAll() {
         for (Bus bus : repository.getAll()) {
             LOGGER.info(bus.toString());

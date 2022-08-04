@@ -46,11 +46,6 @@ public class MotorbikeService extends VehicleService<Motorbike> {
         return values[index];
     }
 
-    public boolean saveMotorbikes(List<Motorbike> motorbikes) {
-        repository.create(motorbikes);
-        return true;
-    }
-
     public void printAll() {
         for (Motorbike motorbike : repository.getAll()) {
             LOGGER.info(motorbike.toString());
