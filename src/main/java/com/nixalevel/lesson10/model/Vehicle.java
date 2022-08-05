@@ -2,6 +2,7 @@ package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class Vehicle {
@@ -10,6 +11,7 @@ public abstract class Vehicle {
     protected BigDecimal price;
     protected static int vehicleCount;
     protected VehicleType type;
+    protected List<String> details;
 
     public int getVehicleCount() {
         return vehicleCount;
@@ -20,6 +22,15 @@ public abstract class Vehicle {
         this.model = model;
         this.price = price;
         this.type = type;
+        vehicleCount++;
+    }
+
+    protected Vehicle(String model, BigDecimal price, VehicleType type, List<String> details) {
+        this.id = UUID.randomUUID().toString();
+        this.model = model;
+        this.price = price;
+        this.type = type;
+        this.details = details;
         vehicleCount++;
     }
 
@@ -41,6 +52,14 @@ public abstract class Vehicle {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<String> details) {
+        this.details = details;
     }
 
     public static class SortByPrice implements Comparator<Vehicle> {

@@ -1,7 +1,5 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.command.Action;
-import com.nixalevel.lesson10.command.Command;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -10,18 +8,12 @@ import com.nixalevel.lesson10.service.AutoService;
 import com.nixalevel.lesson10.service.BusService;
 import com.nixalevel.lesson10.service.MotorbikeService;
 import com.nixalevel.lesson10.service.VehicleService;
-import com.nixalevel.lesson10.utility.BinaryTree;
-import com.nixalevel.lesson10.utility.Container;
-import com.nixalevel.lesson10.utility.Garage;
-import com.nixalevel.lesson10.utility.UserInputUtil;
+import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -158,15 +150,15 @@ public class Main {
         }*/
 
         /* UI */
-        final Action[] actions = Action.values();
+        /*final Action[] actions = Action.values();
         final List<String> names = getNames(actions);
         Command command;
         do {
             command = executeCommand(actions, names);
-        } while (command != null);
+        } while (command != null);*/
 
         /* BinaryTree */
-        BinaryTree<Vehicle> binaryTree = new BinaryTree<>();
+        /*BinaryTree<Vehicle> binaryTree = new BinaryTree<>();
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(6), "TEST"));
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(4), "TEST"));
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(8), "TEST"));
@@ -176,12 +168,75 @@ public class Main {
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(9), "TEST"));
 
         binaryTree.print();
-        binaryTree.sumTree();
+        binaryTree.sumTree();*/
 
+        /* Stream API */
+        StreamApi streamApi = new StreamApi();
+        System.out.println("Create collection Vehicles");
+        final List<Auto> autos = AUTO_SERVICE.createVehicles(1);
+        final List<Bus> buses = BUS_SERVICE.createVehicles(1);
+        final List<Motorbike> motorbikes = MOTORBIKE_SERVICE.createVehicles(1);
+        final List<Vehicle> vehicles = new LinkedList<>();
+        vehicles.addAll(autos);
+        vehicles.addAll(buses);
+        vehicles.addAll(motorbikes);
+
+        System.out.println("Print collection Vehicles");
+        for (Vehicle vehicle : vehicles) {
+            System.out.println(vehicle.toString());
+        }
+
+        System.out.println("findVehiclesPriceExpensiveThan");
+        System.out.println(streamApi.findVehiclesPriceExpensiveThan(500, vehicles));
+
+        System.out.println("calculateVehiclesPriceSum");
+        System.out.println(streamApi.calculateVehiclesPriceSum(vehicles));
+
+        System.out.println("sortVehiclesByModel");
+        for (Map.Entry<String, String> entry : streamApi.sortVehiclesByModel(vehicles).entrySet()) {
+            System.out.println(entry.getKey() + ", " + entry.getValue());
+        }
+
+        System.out.println("getStatistics");
+        System.out.println(streamApi.getStatistics(vehicles));
+
+        System.out.println("checkPrice");
+        System.out.println(streamApi.checkPriceForZeroAndNull(vehicles));
+
+
+        System.out.println("getAuto");
+        Map<String, Auto> autoMap = new HashMap<>();
+        autoMap.put("1", (Auto) vehicles.get(0));
+        autoMap.put("2", new Auto("TEST", AutoManufacturer.BMW, BigDecimal.ONE, "TEST"));
+        autoMap.put("3", new Auto("TEST", AutoManufacturer.BMW, BigDecimal.ZERO, "TEST"));
+        for (int i = 0; i < streamApi.getAuto(autoMap).size(); i++) {
+            System.out.println(streamApi.getAuto(autoMap).get(i));
+        }
+
+        System.out.println("checkDetail");
+        List<String> detailAutoOne = new LinkedList<>();
+        detailAutoOne.add("engine");
+        detailAutoOne.add("brakes");
+        detailAutoOne.add("wheels");
+        detailAutoOne.add("tires");
+        detailAutoOne.add("doors");
+        List<String> detailAutoTwo = new LinkedList<>();
+        detailAutoTwo.add("brakes");
+        detailAutoTwo.add("wheels");
+        detailAutoTwo.add("tires");
+        detailAutoTwo.add("doors");
+        List<String> detailAutoThree = new LinkedList<>();
+        detailAutoThree.add("wheels");
+        detailAutoThree.add("tires");
+        detailAutoThree.add("doors");
+        vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoOne));
+        vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoTwo));
+        vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoThree));
+        System.out.println(streamApi.checkDetail(vehicles, "tires"));
     }
 
     /* UI */
-    private static List<String> getNames(Action[] actions) {
+    /*private static List<String> getNames(Action[] actions) {
         final List<String> names = new ArrayList<>(actions.length);
         for (Action action : actions) {
             names.add(action.getName());
@@ -193,5 +248,5 @@ public class Main {
         int userInput = UserInputUtil.getUserInput("What you want:", names);
         final Action action = actions[userInput];
         return action.execute();
-    }
+    }*/
 }
