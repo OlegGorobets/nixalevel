@@ -237,7 +237,7 @@ public class Main {
 
         /* IO/NIO */
         ReadFromFile readFromFile = new ReadFromFile();
-        final List<Vehicle> vehicles = new LinkedList<>();
+        List<Vehicle> vehicles = new LinkedList<>();
         vehicles.add(readFromFile.readFileAndCreateAuto("src/main/resources/readme.xml"));
         vehicles.add(readFromFile.readFileAndCreateAuto("src/main/resources/readme.json"));
         for (Vehicle vehicle : vehicles) {

@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ReadFromFile {
-    public static final Pattern PATTERN = Pattern.compile(">+([A-Za-z0-9-: ]*).|\": \"\\b([A-Za-z0-9-: ]*).");
+    private static final Pattern PATTERN = Pattern.compile(">+([A-Za-z0-9-: ]*).|\": \"\\b([A-Za-z0-9-: ]*).");
 
     public Auto readFileAndCreateAuto(String filePath) throws ParseException {
         return createAuto(readAndParsing(filePath));
