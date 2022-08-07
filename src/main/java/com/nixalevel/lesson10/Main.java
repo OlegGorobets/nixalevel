@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
 
@@ -238,8 +239,17 @@ public class Main {
         /* IO/NIO */
         ReadFromFile readFromFile = new ReadFromFile();
         final List<Vehicle> vehicles = new LinkedList<>();
-        vehicles.add(readFromFile.readFileAndCreateAuto("src/main/resources/readme.xml"));
-        vehicles.add(readFromFile.readFileAndCreateAuto("src/main/resources/readme.json"));
+        final List<String> filePaths = new LinkedList<>();
+        filePaths.add("readme.xml");
+        filePaths.add("readme.json");
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream;
+        for (String filePath : filePaths) {
+            inputStream = classLoader.getResourceAsStream(filePath);
+            vehicles.add(readFromFile.readFileAndCreateAuto(inputStream));
+        }
+
         for (Vehicle vehicle : vehicles) {
             System.out.println(vehicle);
         }

@@ -5,10 +5,9 @@ import com.nixalevel.lesson10.model.AutoManufacturer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import java.util.regex.Pattern;
 public class ReadFromFile {
     private static final Pattern PATTERN = Pattern.compile(">+([A-Za-z0-9-: ]*).|\": \"\\b([A-Za-z0-9-: ]*).");
 
-    public Auto readFileAndCreateAuto(String filePath) throws ParseException {
-        return createAuto(readAndParsing(filePath));
+    public Auto readFileAndCreateAuto(InputStream inputStream) throws ParseException {
+        return createAuto(readAndParsing(inputStream));
     }
 
     public Auto createAuto(List<String> listAuto) throws ParseException {
@@ -32,10 +31,10 @@ public class ReadFromFile {
                 listAuto.get(3), sdf.parse(listAuto.get(4)), Integer.parseInt(listAuto.get(5)), engine);
     }
 
-    public List<String> readAndParsing(String filePath) {
-        Path path = Paths.get(filePath);
+    public List<String> readAndParsing(InputStream inputStream) {
         List<String> parsingList = new ArrayList<>();
-        try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 Matcher matcher = PATTERN.matcher(line);
