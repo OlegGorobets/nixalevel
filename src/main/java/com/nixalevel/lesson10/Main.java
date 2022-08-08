@@ -12,7 +12,9 @@ import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.*;
 
 public class Main {
@@ -25,7 +27,7 @@ public class Main {
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         /* Create all types of products */
         /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createVehicles(5);
@@ -171,7 +173,7 @@ public class Main {
         binaryTree.sumTree();*/
 
         /* Stream API */
-        StreamApi streamApi = new StreamApi();
+        /*StreamApi streamApi = new StreamApi();
         System.out.println("Create collection Vehicles");
         final List<Auto> autos = AUTO_SERVICE.createVehicles(1);
         final List<Bus> buses = BUS_SERVICE.createVehicles(1);
@@ -232,7 +234,25 @@ public class Main {
         vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoOne));
         vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoTwo));
         vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoThree));
-        System.out.println(streamApi.checkDetail(vehicles, "tires"));
+        System.out.println(streamApi.checkDetail(vehicles, "tires"));*/
+
+        /* IO/NIO */
+        ReadFromFile readFromFile = new ReadFromFile();
+        final List<Vehicle> vehicles = new LinkedList<>();
+        final List<String> filePaths = new LinkedList<>();
+        filePaths.add("readme.xml");
+        filePaths.add("readme.json");
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream;
+        for (String filePath : filePaths) {
+            inputStream = classLoader.getResourceAsStream(filePath);
+            vehicles.add(readFromFile.readFileAndCreateAuto(inputStream));
+        }
+
+        for (Vehicle vehicle : vehicles) {
+            System.out.println(vehicle);
+        }
     }
 
     /* UI */
