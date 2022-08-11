@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.*;
@@ -237,7 +238,7 @@ public class Main {
         System.out.println(streamApi.checkDetail(vehicles, "tires"));*/
 
         /* IO/NIO */
-        ReadFromFile readFromFile = new ReadFromFile();
+        /*ReadFromFile readFromFile = new ReadFromFile();
         final List<Vehicle> vehicles = new LinkedList<>();
         final List<String> filePaths = new LinkedList<>();
         filePaths.add("readme.xml");
@@ -252,7 +253,17 @@ public class Main {
 
         for (Vehicle vehicle : vehicles) {
             System.out.println(vehicle);
-        }
+        }*/
+
+        /* Builder */
+        Auto auto = new Auto.Builder()
+                .withAutoManufacturer(AutoManufacturer.TOYOTA)
+                .withCount(1)
+                .withPrice(BigDecimal.valueOf(7000000))
+                .withBodyType("Hatchback")
+                .withModel("TRUENO")
+                .build();
+        System.out.println(auto);
     }
 
     /* UI */

@@ -7,10 +7,14 @@ import java.util.List;
 public class Auto extends Vehicle {
     private String bodyType;
     private AutoManufacturer autoManufacturer;
-    private Date created; //Date
+    private Date created;
     private int count;
     private List<String> engine;
     private static int vehicleCount;
+
+    public Auto() {
+        super();
+    }
 
     public int getVehicleCount() {
         return vehicleCount;
@@ -40,6 +44,52 @@ public class Auto extends Vehicle {
         this.count = count;
         this.engine = engine;
         vehicleCount++;
+    }
+
+    public static class Builder {
+        private final Auto newAuto;
+        public Builder() {
+            newAuto = new Auto();
+        }
+
+        public Builder withModel(String model) {
+            newAuto.model = model;
+            return this;
+        }
+
+        public Builder withAutoManufacturer(AutoManufacturer autoManufacturer) {
+            newAuto.autoManufacturer = autoManufacturer;
+            return this;
+        }
+
+        public Builder withBodyType(String bodyType) {
+            newAuto.bodyType = bodyType;
+            return this;
+        }
+
+        public Builder withPrice(BigDecimal price) {
+            newAuto.price = price;
+            return this;
+        }
+
+        public Builder withCount(int count) {
+            newAuto.count = count;
+            return this;
+        }
+
+        public Auto build() {
+            if (newAuto.price == null) {
+                throw new IllegalArgumentException("Price is null");
+            } else if (newAuto.count <= 0) {
+                throw new IllegalArgumentException("Count <= 0>");
+            } else if (newAuto.bodyType.length() > 20) {
+                throw new IllegalArgumentException("BodyType length > 20");
+            } else if (newAuto.id == null) {
+                throw new IllegalArgumentException("Id is null");
+            }
+            return newAuto;
+        }
+
     }
 
     public String getBodyType() {
@@ -91,9 +141,10 @@ public class Auto extends Vehicle {
         return "Auto{" +
                 "bodyType='" + bodyType + '\'' +
                 ", autoManufacturer=" + autoManufacturer +
-                ", created='" + created + '\'' +
                 ", count=" + count +
-                ", engine=" + engine +
+                ", id='" + id + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
                 '}';
     }
 }
