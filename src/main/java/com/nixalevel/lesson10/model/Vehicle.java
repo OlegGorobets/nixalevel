@@ -13,6 +13,10 @@ public abstract class Vehicle {
     protected VehicleType type;
     protected List<String> details;
 
+    public Vehicle() {
+        this.id = UUID.randomUUID().toString();
+    }
+
     public int getVehicleCount() {
         return vehicleCount;
     }
