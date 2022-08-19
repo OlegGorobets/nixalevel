@@ -56,7 +56,7 @@ public class ReadFromFile {
         return readFile;
     }
 
-    private static String[] parsingLine(String line, int[] titleSubsequence) {
+    private static String[] parsingLine(String line, int[] titleSubsequence) throws InvalidLineReadException {
         String[] split = line.split(DELIMITER);
         String[] row = new String[titleSubsequence.length];
         for (int i = 0; i < titleSubsequence.length; i++) {
