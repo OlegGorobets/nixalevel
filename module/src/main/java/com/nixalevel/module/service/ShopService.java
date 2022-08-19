@@ -66,7 +66,7 @@ public class ShopService {
         } else {
             invoiceType = InvoiceType.WHOLESALE;
         }
-        LOGGER.info(date + ", " + person + ", " + randomProductList + ", " + invoiceType);
+        LOGGER.info("Time: {}, User data: {}, Invoice data: {}, {}", date, person, randomProductList, invoiceType);
         return new Invoice(randomProductList, person, invoiceType, date);
     }
 
