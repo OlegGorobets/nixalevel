@@ -1,11 +1,3 @@
-model,diagonal,screen type,country,price,type,series
-Samsung,none,QLED,none,200,Telephone,S-10
-none,25,LED,China,1500,Television,RTI-14
-Samsung,none,QLED,none,200,Telephone,S-10
-none,25,LED,China,1500,Television,RTI-14
-Samsung,none,QLED,none,200,Telephone,S-10
-none,25,LED,China,1500,Television,RTI-14
-Samsung,none,QLED,none,200,Telephone,S-10
-none,25,LED,China,1500,Television,RTI-14
-Samsung,none,QLED,none,200,Telephone,S-10
-none,25,LED,China,1500,Television,RTI-14
+type,series,model,diagonal,screen type,country,price
+Telephone,S-10,Samsung,none,QLED,none,200
+Television,RTI-14,none,25,LED,China,1500

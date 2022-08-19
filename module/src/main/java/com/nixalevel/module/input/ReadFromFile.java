@@ -26,17 +26,45 @@ public class ReadFromFile {
         List<Product> productList = new ArrayList<>();
         for (String[] strings : readFile()) {
             List<String> stringList = Arrays.stream(strings).toList();
-            if (stringList.get(0).equals("Telephone")) {
-                productList.add(new Telephone(stringList.get(1), stringList.get(2), ScreenType.valueOf(stringList.get(4)),
-                        new BigDecimal(stringList.get(6))));
-            } else if (stringList.get(0).equals("Television")) {
-                productList.add(new Television(stringList.get(1), Double.parseDouble(stringList.get(3)),
-                        ScreenType.valueOf(stringList.get(4)), stringList.get(5), new BigDecimal(stringList.get(6))));
-            } else {
-                throw new InvalidProductException("The product is missing.");
+            switch (stringList.get(0)) {
+                case "Telephone" -> productList.add(createTelephoneProductWithDefault(stringList));
+                case "Television" -> productList.add(createTelevisionProductWithDefault(stringList));
+                case "default" ->
+                        productList.add(new Television(stringList.get(1), Double.parseDouble(stringList.get(3)),
+                                ScreenType.valueOf(stringList.get(4)), stringList.get(5), new BigDecimal(stringList.get(6))));
+                default -> throw new InvalidProductException("The product is missing.");
             }
         }
         return productList;
+    }
+
+    private static Television createTelevisionProductWithDefault(List<String> stringList) {
+        if (stringList.get(3).equals("default")) {
+            return new Television(stringList.get(1), 0,
+                    ScreenType.valueOf(stringList.get(4)), stringList.get(5), new BigDecimal(stringList.get(6)));
+        } else if (stringList.get(4).equals("default")) {
+            return new Television(stringList.get(1), Double.parseDouble(stringList.get(3)),
+                    ScreenType.LED, stringList.get(5), new BigDecimal(stringList.get(6)));
+        } else if (stringList.get(6).equals("default")) {
+            return new Television(stringList.get(1), Double.parseDouble(stringList.get(3)),
+                    ScreenType.LED, stringList.get(5), BigDecimal.ZERO);
+        } else {
+            return new Television(stringList.get(1), Double.parseDouble(stringList.get(3)),
+                    ScreenType.valueOf(stringList.get(4)), stringList.get(5), new BigDecimal(stringList.get(6)));
+        }
+    }
+
+    private static Telephone createTelephoneProductWithDefault(List<String> stringList) {
+        if (stringList.get(4).equals("default")) {
+           return new Telephone(stringList.get(1), stringList.get(2), ScreenType.QLED,
+                    new BigDecimal(stringList.get(6)));
+        } else if (stringList.get(6).equals("default")) {
+            return new Telephone(stringList.get(1), stringList.get(2), ScreenType.valueOf(stringList.get(4)),
+                    BigDecimal.ZERO);
+        } else {
+            return new Telephone(stringList.get(1), stringList.get(2), ScreenType.valueOf(stringList.get(4)),
+                    new BigDecimal(stringList.get(6)));
+        }
     }
 
     private static List<String[]> readFile() {
@@ -49,21 +77,27 @@ public class ReadFromFile {
                 while ((line = bufferedReader.readLine()) != null) {
                     readFile.add(parsingLine(line, titleSubsequence));
                 }
-            } catch (InvalidLineReadException | IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return readFile;
     }
 
-    private static String[] parsingLine(String line, int[] titleSubsequence) throws InvalidLineReadException {
+    private static String[] parsingLine(String line, int[] titleSubsequence) {
         String[] split = line.split(DELIMITER);
         String[] row = new String[titleSubsequence.length];
         for (int i = 0; i < titleSubsequence.length; i++) {
-            if (!split[titleSubsequence[i]].equals("")) {
-                row[i] = split[titleSubsequence[i]];
-            } else {
-                throw new InvalidLineReadException("An invalid line was read.");
+            try {
+                if (split[titleSubsequence[i]].equals("")) {
+                    throw new InvalidLineReadException("An invalid line was read.");
+                } else {
+
+                    row[i] = split[titleSubsequence[i]];
+                }
+            } catch (InvalidLineReadException e) {
+                e.printStackTrace();
+                row[i] = "default";
             }
         }
         return row;
