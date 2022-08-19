@@ -92,7 +92,6 @@ public class ReadFromFile {
                 if (split[titleSubsequence[i]].equals("")) {
                     throw new InvalidLineReadException("An invalid line was read.");
                 } else {
-
                     row[i] = split[titleSubsequence[i]];
                 }
             } catch (InvalidLineReadException e) {
