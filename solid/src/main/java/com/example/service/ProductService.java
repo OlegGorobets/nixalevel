@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ProductService {
-    protected final ProductRepository repository;
+    private final ProductRepository repository;
 
     public ProductService(ProductRepository repository) {
         this.repository = repository;
