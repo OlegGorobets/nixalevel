@@ -1,5 +1,7 @@
 package com.nixalevel.lesson10.repository;
 
+import com.nixalevel.lesson10.annotation.Autowired;
+import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Auto;
 
 import java.util.Iterator;
@@ -7,11 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class AutoRepository implements CrudRepository<Auto> {
     private final List<Auto> autos;
 
     private static AutoRepository instance;
 
+    @Autowired
     public AutoRepository() {
         autos = new LinkedList<>();
     }

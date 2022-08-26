@@ -1,5 +1,7 @@
 package com.nixalevel.lesson10.repository;
 
+import com.nixalevel.lesson10.annotation.Autowired;
+import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Motorbike;
 
 import java.util.Iterator;
@@ -7,11 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class MotorbikeRepository implements CrudRepository<Motorbike> {
     private final List<Motorbike> motorbikes;
 
     private static MotorbikeRepository instance;
 
+    @Autowired
     public MotorbikeRepository() {
         motorbikes = new LinkedList<>();
     }

@@ -1,5 +1,7 @@
 package com.nixalevel.lesson10.service;
 
+import com.nixalevel.lesson10.annotation.Autowired;
+import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
 import com.nixalevel.lesson10.repository.BusRepository;
@@ -13,12 +15,14 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Singleton
 public class BusService extends VehicleService<Bus> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BusService.class);
     private static final Random RANDOM = new Random();
 
     private static BusService instance;
 
+    @Autowired
     public BusService(CrudRepository<Bus> repository) {
         super(repository);
     }
