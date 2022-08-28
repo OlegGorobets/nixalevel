@@ -46,6 +46,15 @@ public class Auto extends Vehicle {
         vehicleCount++;
     }
 
+    public Auto(String id, String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType,
+                List<String> details, int count, Date created) {
+        super(id, model, price, VehicleType.AUTO , details);
+        this.autoManufacturer = autoManufacturer;
+        this.bodyType = bodyType;
+        this.count = count;
+        this.created = created;
+    }
+
     public static class Builder {
         private final Auto newAuto;
         public Builder() {
@@ -141,10 +150,14 @@ public class Auto extends Vehicle {
         return "Auto{" +
                 "bodyType='" + bodyType + '\'' +
                 ", autoManufacturer=" + autoManufacturer +
+                ", created=" + created +
                 ", count=" + count +
+                ", engine=" + engine +
                 ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
+                ", type=" + type +
+                ", details=" + details +
                 '}';
     }
 }

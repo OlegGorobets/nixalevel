@@ -38,8 +38,21 @@ public abstract class Vehicle {
         vehicleCount++;
     }
 
+    protected Vehicle(String id, String model, BigDecimal price, VehicleType type, List<String> details) {
+        this.id = id;
+        this.model = model;
+        this.price = price;
+        this.type = type;
+        this.details = details;
+        vehicleCount++;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getModel() {

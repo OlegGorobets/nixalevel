@@ -1,12 +1,15 @@
 package com.nixalevel.lesson10.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class Bus extends Vehicle {
 
     private int numberOfSeats;
     private BusManufacturer busManufacturer;
+    private Date created;
+    private int count;
     private static int vehicleCount;
 
     public int getVehicleCount() {
@@ -28,6 +31,15 @@ public class Bus extends Vehicle {
         vehicleCount++;
     }
 
+    public Bus(String id, String model, BusManufacturer busManufacturer, BigDecimal price, int numberOfSeats,
+                List<String> details, int count, Date created) {
+        super(id, model, price, VehicleType.BUS , details);
+        this.busManufacturer = busManufacturer;
+        this.numberOfSeats = numberOfSeats;
+        this.count = count;
+        this.created = created;
+    }
+
     public int getNumberOfSeats() {
         return numberOfSeats;
     }
@@ -44,14 +56,33 @@ public class Bus extends Vehicle {
         this.busManufacturer = busManufacturer;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     @Override
     public String toString() {
         return "Bus{" +
                 "numberOfSeats=" + numberOfSeats +
+                ", busManufacturer=" + busManufacturer +
+                ", created=" + created +
+                ", count=" + count +
                 ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
-                ", busManufacturer=" + busManufacturer +
+                ", type=" + type +
                 ", details=" + details +
                 '}';
     }

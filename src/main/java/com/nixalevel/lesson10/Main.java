@@ -1,17 +1,20 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.AutoRepository;
-import com.nixalevel.lesson10.repository.BusRepository;
-import com.nixalevel.lesson10.repository.MotorbikeRepository;
-import com.nixalevel.lesson10.service.AutoService;
-import com.nixalevel.lesson10.service.BusService;
-import com.nixalevel.lesson10.service.MotorbikeService;
-import com.nixalevel.lesson10.service.VehicleService;
+import com.nixalevel.lesson10.repository.*;
+import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -25,6 +28,10 @@ public class Main {
     private static final Container<Vehicle> CONTAINER = new Container<>();
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
+
+    private static final JDBCAutoService JDBC_AUTO_SERVICE = new JDBCAutoService(new JDBCAutoRepository());
+    private static final JDBCBusService JDBC_BUS_SERVICE = new JDBCBusService(new JDBCBusRepository());
+    private static final JDBCMotorbikeService JDBC_MOTORBIKE_SERVICE = new JDBCMotorbikeService(new JDBCMotorbikeRepository());
 
     public static void main(String[] args) throws ParseException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
         /* Create all types of products */
@@ -287,6 +294,19 @@ public class Main {
         declaredFieldAutoRepositoryTwo.setAccessible(true);
         System.out.println(declaredFieldAutoRepositoryTwo.get(autoRepositoryTwo).hashCode());
         System.out.println(autoRepositoryTwo.hashCode());
+        System.out.println(auto);*/
+
+        /* JDBC */
+        JDBCConfig.getConnection();
+        //JDBC_AUTO_SERVICE.removeAll();
+        JDBC_AUTO_SERVICE.createVehicles(5);
+        JDBC_AUTO_SERVICE.print();
+
+        JDBC_BUS_SERVICE.createVehicles(5);
+        JDBC_BUS_SERVICE.print();
+
+        JDBC_MOTORBIKE_SERVICE.createVehicles(5);
+        JDBC_MOTORBIKE_SERVICE.print();
     }
 
     /* UI */

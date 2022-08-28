@@ -19,4 +19,6 @@ public interface CrudRepository<T extends Vehicle> {
     boolean update(T vehicle);
 
     boolean delete(String id);
+
+    void clear();
 }
