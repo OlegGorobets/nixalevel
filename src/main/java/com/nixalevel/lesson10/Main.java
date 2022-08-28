@@ -1,13 +1,9 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.AutoRepository;
-import com.nixalevel.lesson10.repository.BusRepository;
-import com.nixalevel.lesson10.repository.MotorbikeRepository;
-import com.nixalevel.lesson10.service.AutoService;
-import com.nixalevel.lesson10.service.BusService;
-import com.nixalevel.lesson10.service.MotorbikeService;
-import com.nixalevel.lesson10.service.VehicleService;
+import com.nixalevel.lesson10.repository.*;
+import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.*;
 
@@ -28,7 +28,11 @@ public class Main {
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
 
-    public static void main(String[] args) throws ParseException {
+    private static final JDBCAutoService JDBC_AUTO_SERVICE = new JDBCAutoService(new JDBCAutoRepository());
+    private static final JDBCBusService JDBC_BUS_SERVICE = new JDBCBusService(new JDBCBusRepository());
+    private static final JDBCMotorbikeService JDBC_MOTORBIKE_SERVICE = new JDBCMotorbikeService(new JDBCMotorbikeRepository());
+
+    public static void main(String[] args) throws ParseException, SQLException {
         /* Create all types of products */
         /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createVehicles(5);
@@ -256,14 +260,26 @@ public class Main {
         }*/
 
         /* Builder */
-        Auto auto = new Auto.Builder()
+        /*Auto auto = new Auto.Builder()
                 .withAutoManufacturer(AutoManufacturer.TOYOTA)
                 .withCount(1)
                 .withPrice(BigDecimal.valueOf(7000000))
                 .withBodyType("Hatchback")
                 .withModel("TRUENO")
                 .build();
-        System.out.println(auto);
+        System.out.println(auto);*/
+
+        /* JDBC */
+        JDBCConfig.getConnection();
+        //JDBC_AUTO_SERVICE.removeAll();
+        JDBC_AUTO_SERVICE.createVehicles(5);
+        JDBC_AUTO_SERVICE.print();
+
+        JDBC_BUS_SERVICE.createVehicles(5);
+        JDBC_BUS_SERVICE.print();
+
+        JDBC_MOTORBIKE_SERVICE.createVehicles(5);
+        JDBC_MOTORBIKE_SERVICE.print();
     }
 
     /* UI */
