@@ -6,13 +6,12 @@ import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
 import com.nixalevel.lesson10.repository.BusRepository;
 import com.nixalevel.lesson10.repository.CrudRepository;
+import com.nixalevel.lesson10.repository.JDBCBusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Singleton
@@ -29,18 +28,23 @@ public class BusService extends VehicleService<Bus> {
 
     public static BusService getInstance() {
         if (instance == null) {
-            instance = new BusService(BusRepository.getInstance());
+            instance = new BusService(JDBCBusRepository.getInstance());
         }
         return instance;
     }
 
     @Override
     protected Bus create() {
+        List<String> list = Arrays.asList("test1", "test2");
         return new Bus(
+                UUID.randomUUID().toString(),
                 "Model-" + RANDOM.nextInt(1000),
                 getRandomManufacturer(),
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                RANDOM.nextInt(20, 40)
+                RANDOM.nextInt(1, 50),
+                list,
+                RANDOM.nextInt(1, 100),
+                new Date()
         );
     }
 
@@ -116,6 +120,11 @@ public class BusService extends VehicleService<Bus> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
+    }
+
+    public boolean removeAll() {
+        repository.clear();
+        return true;
     }
 
     public Bus createDefaultBus() {

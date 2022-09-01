@@ -29,9 +29,10 @@ public class Main {
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
 
-    private static final JDBCAutoService JDBC_AUTO_SERVICE = new JDBCAutoService(new JDBCAutoRepository());
-    private static final JDBCBusService JDBC_BUS_SERVICE = new JDBCBusService(new JDBCBusRepository());
-    private static final JDBCMotorbikeService JDBC_MOTORBIKE_SERVICE = new JDBCMotorbikeService(new JDBCMotorbikeRepository());
+    private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
+    private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
+    private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
+    private static final InvoiceService INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
 
     public static void main(String[] args) throws ParseException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
         /* Create all types of products */
@@ -298,7 +299,12 @@ public class Main {
 
         /* JDBC */
         JDBCConfig.getConnection();
-        //JDBC_AUTO_SERVICE.removeAll();
+        JDBC_AUTO_SERVICE.removeAll();
+        JDBC_BUS_SERVICE.removeAll();
+        JDBC_MOTORBIKE_SERVICE.removeAll();
+        INVOICE_SERVICE.removeAll();
+
+
         JDBC_AUTO_SERVICE.createVehicles(5);
         JDBC_AUTO_SERVICE.print();
 
@@ -307,6 +313,16 @@ public class Main {
 
         JDBC_MOTORBIKE_SERVICE.createVehicles(5);
         JDBC_MOTORBIKE_SERVICE.print();
+
+        INVOICE_SERVICE.createInvoice(5);
+        INVOICE_SERVICE.createInvoice(5);
+        INVOICE_SERVICE.createInvoice(5);
+        INVOICE_SERVICE.getAll();
+
+        INVOICE_SERVICE.getInvoiceExpensiveThan(500);
+        INVOICE_SERVICE.getCountOfInvoice();
+        INVOICE_SERVICE.updateCreatedTime("");
+        INVOICE_SERVICE.getGroupByAmount();
     }
 
     /* UI */

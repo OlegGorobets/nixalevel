@@ -4,15 +4,13 @@ import com.nixalevel.lesson10.annotation.Autowired;
 import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.AutoManufacturer;
-import com.nixalevel.lesson10.repository.AutoRepository;
 import com.nixalevel.lesson10.repository.CrudRepository;
+import com.nixalevel.lesson10.repository.JDBCAutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Singleton
@@ -29,18 +27,23 @@ public class AutoService extends VehicleService<Auto> {
 
     public static AutoService getInstance() {
         if (instance == null) {
-            instance = new AutoService(AutoRepository.getInstance());
+            instance = new AutoService(JDBCAutoRepository.getInstance());
         }
         return instance;
     }
 
     @Override
     protected Auto create() {
+        List<String> list = Arrays.asList("test1", "test2");
         return new Auto(
+                UUID.randomUUID().toString(),
                 "Model-" + RANDOM.nextInt(1000),
                 getRandomManufacturer(),
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                "Model-" + RANDOM.nextInt(1000)
+                "Model-" + RANDOM.nextInt(1000),
+                list,
+                RANDOM.nextInt(1, 100),
+                new Date()
         );
     }
 
@@ -109,6 +112,11 @@ public class AutoService extends VehicleService<Auto> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
+    }
+
+    public boolean removeAll() {
+        repository.clear();
+        return true;
     }
 
     public Auto createDefaultAuto() {

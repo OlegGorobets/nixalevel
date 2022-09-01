@@ -32,14 +32,14 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
 
     private Motorbike mapRowToObject(ResultSet resultSet) throws SQLException {
         return new Motorbike(
-                resultSet.getString("id"),
-                resultSet.getString("model"),
+                resultSet.getString("motorbike_id"),
+                resultSet.getString("motorbike_model"),
                 MotorbikeManufacturer.valueOf(resultSet.getString("motorbike_manufacturer")),
-                resultSet.getBigDecimal("price"),
-                resultSet.getInt("max_speed"),
-                Collections.singletonList(resultSet.getString("details")),
-                resultSet.getInt("count"),
-                resultSet.getDate("created")
+                resultSet.getBigDecimal("motorbike_price"),
+                resultSet.getInt("motorbike_max_speed"),
+                Collections.singletonList(resultSet.getString("motorbike_details")),
+                resultSet.getInt("motorbike_count"),
+                resultSet.getDate("motorbike_created")
         );
     }
 
@@ -56,7 +56,7 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
 
     @Override
     public Optional<Motorbike> findById(String id) {
-        final String sql = "SELECT * FROM public.\"Motorbike\" WHERE id = ?";
+        final String sql = "SELECT * FROM public.\"Motorbike\" WHERE motorbike_id = ?";
         try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             final ResultSet resultSet = preparedStatement.executeQuery();
@@ -89,8 +89,9 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
         if (motorbike == null) {
             throw new IllegalArgumentException("Motorbike must not be null");
         }
-        final String sql = "INSERT INTO public.\"Motorbike\"(id, model, motorbike_manufacturer, price, max_speed, details, " +
-                "count, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO public.\"Motorbike\"(motorbike_id, motorbike_model, " +
+                "motorbike_manufacturer, motorbike_price, motorbike_max_speed, motorbike_details, " +
+                "motorbike_count, motorbike_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             mapObjectToRow(preparedStatement, motorbike);
             return preparedStatement.execute();
@@ -111,8 +112,9 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
     @Override
     public boolean update(Motorbike motorbike) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public.\"Motorbike\" SET " +
-                "(id, model, motorbike_manufacturer, price, max_speed, details, count, created) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?")) {
+                "(motorbike_id, motorbike_model, motorbike_manufacturer,motorbike_ price, motorbike_max_speed, " +
+                "motorbike_details, motorbike_count, motorbike_created) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE motorbike_id = ?")) {
             preparedStatement.setString(1, motorbike.getId());
             preparedStatement.setString(2, motorbike.getModel());
             preparedStatement.setString(3, motorbike.getMotorbikeManufacturer().toString());
@@ -131,7 +133,7 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
     @Override
     public boolean delete(String id) {
         try (final PreparedStatement statement = connection.prepareStatement("DELETE * FROM public.\"Motorbike\" " +
-                "WHERE id = ?")) {
+                "WHERE motorbike_id = ?")) {
             statement.setString(1, id);
             if (findById(id).isPresent()) {
                 statement.executeUpdate();
@@ -144,11 +146,65 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
         return true;
     }
 
+    public int getCountRowsMotorbikeWithoutInvoiceId() {
+        int count = 0;
+        final String sql = "SELECT COUNT(*) FROM public.\"Motorbike\" WHERE \"Motorbike\".motorbike_invoice_id ISNULL";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                count += resultSet.getInt("count");
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void clear() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("DELETE FROM public.\"Motorbike\"");
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setMotorbikeInvoiceId(String uuid) {
+        final String sql = "UPDATE public.\"Motorbike\" SET motorbike_invoice_id = ? WHERE motorbike_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, uuid);
+            preparedStatement.setString(2, getRandomRowsMotorbikeWithoutInvoiceId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getRandomRowsMotorbikeWithoutInvoiceId() {
+        final String sql = "SELECT * FROM public.\"Motorbike\" WHERE \"Motorbike\".motorbike_invoice_id ISNULL " +
+                "ORDER BY RANDOM() LIMIT 1";
+        String motorbikeId = "";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                motorbikeId = resultSet.getString("motorbike_id");
+            }
+            return motorbikeId;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getCountRowsMotorbikeWithInvoiceId() {
+        int count = 0;
+        final String sql = "SELECT COUNT(*) FROM public.\"Motorbike\" WHERE \"Motorbike\".motorbike_invoice_id NOTNULL";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                count += resultSet.getInt("count");
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
