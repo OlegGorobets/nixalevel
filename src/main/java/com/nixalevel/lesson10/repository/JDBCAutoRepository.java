@@ -32,14 +32,14 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
 
     private Auto mapRowToObject(ResultSet resultSet) throws SQLException {
         return new Auto(
-                resultSet.getString("id"),
-                resultSet.getString("model"),
+                resultSet.getString("auto_id"),
+                resultSet.getString("auto_model"),
                 AutoManufacturer.valueOf(resultSet.getString("auto_manufacturer")),
-                resultSet.getBigDecimal("price"),
-                resultSet.getString("body_type"),
-                Collections.singletonList(resultSet.getString("details")),
-                resultSet.getInt("count"),
-                resultSet.getDate("created")
+                resultSet.getBigDecimal("auto_price"),
+                resultSet.getString("auto_body_type"),
+                Collections.singletonList(resultSet.getString("auto_details")),
+                resultSet.getInt("auto_count"),
+                resultSet.getDate("auto_created")
         );
     }
 
@@ -56,7 +56,7 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
 
     @Override
     public Optional<Auto> findById(String id) {
-        final String sql = "SELECT * FROM public.\"Auto\" WHERE id = ?";
+        final String sql = "SELECT * FROM public.\"Auto\" WHERE auto_id = ?";
         try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, id);
             final ResultSet resultSet = preparedStatement.executeQuery();
@@ -89,8 +89,8 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
         if (auto == null) {
             throw new IllegalArgumentException("Auto must not be null");
         }
-        final String sql = "INSERT INTO public.\"Auto\"(id, model, auto_manufacturer, price, body_type, details, " +
-                "count, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO public.\"Auto\"(auto_id, auto_model, auto_manufacturer, auto_price, " +
+                "auto_body_type, auto_details, auto_count, auto_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (final PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             mapObjectToRow(preparedStatement, auto);
             return preparedStatement.execute();
@@ -110,9 +110,10 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
 
     @Override
     public boolean update(Auto auto) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE public.\"Auto\" SET " +
-                "(id, model, auto_manufacturer, price, body_type, details, count, created) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?")) {
+        final String sql = "UPDATE public.\"Auto\" SET (auto_id, auto_model, auto_manufacturer, auto_price, " +
+                "auto_body_type, auto_details, auto_count, auto_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                "WHERE auto_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, auto.getId());
             preparedStatement.setString(2, auto.getModel());
             preparedStatement.setString(3, auto.getAutoManufacturer().toString());
@@ -130,11 +131,11 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
 
     @Override
     public boolean delete(String id) {
-        try (final PreparedStatement statement = connection.prepareStatement("DELETE * FROM public.\"Auto\" " +
-                "WHERE id = ?")) {
-            statement.setString(1, id);
+        try (final PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " +
+                "public.\"Auto\" WHERE auto_id = ?")) {
+            preparedStatement.setString(1, id);
             if (findById(id).isPresent()) {
-                statement.executeUpdate();
+                preparedStatement.executeUpdate();
             } else {
                 return false;
             }
@@ -144,11 +145,65 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
         return true;
     }
 
+    public int getCountRowsAutoWithoutInvoiceId() {
+        int count = 0;
+        final String sql = "SELECT COUNT(*) FROM public.\"Auto\" WHERE \"Auto\".auto_invoice_id ISNULL";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                count += resultSet.getInt("count");
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void clear() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("DELETE FROM public.\"Auto\"");
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setAutoInvoiceId(String uuid) {
+        final String sql = "UPDATE public.\"Auto\" SET auto_invoice_id = ? WHERE auto_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, uuid);
+            preparedStatement.setString(2, getRandomRowsAutoWithoutInvoiceId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getRandomRowsAutoWithoutInvoiceId() {
+        final String sql = "SELECT * FROM public.\"Auto\" WHERE \"Auto\".auto_invoice_id ISNULL ORDER BY RANDOM() " +
+                "LIMIT 1";
+        String autoId = "";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                autoId = resultSet.getString("auto_id");
+            }
+            return autoId;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getCountRowsAutoWithInvoiceId() {
+        int count = 0;
+        final String sql = "SELECT COUNT(*) FROM public.\"Auto\" WHERE \"Auto\".auto_invoice_id NOTNULL";
+        try (final Statement statement = connection.createStatement()) {
+            final ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                count += resultSet.getInt("count");
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
