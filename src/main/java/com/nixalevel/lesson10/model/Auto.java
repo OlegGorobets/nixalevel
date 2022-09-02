@@ -1,14 +1,23 @@
 package com.nixalevel.lesson10.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Auto")
 public class Auto extends Vehicle {
+    @Column(name="auto_body_type")
     private String bodyType;
+    @Column(name="auto_manufacturer")
     private AutoManufacturer autoManufacturer;
+    @Column(name="auto_created")
     private Date created;
+    @Column(name="auto_count")
     private int count;
+
+    @OneToMany(targetEntity=Auto.class, mappedBy="engine", fetch= FetchType.EAGER)
     private List<String> engine;
     private static int vehicleCount;
 

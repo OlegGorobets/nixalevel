@@ -1,17 +1,29 @@
 package com.nixalevel.lesson10.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Invoice")
 public class Invoice {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private Date created;
+    @OneToMany(targetEntity=Invoice.class, mappedBy="vehicles", fetch= FetchType.EAGER)
     private List<Vehicle> vehicles;
 
     public Invoice(String id, Date created, List<Vehicle> vehicles) {
         this.id = id;
         this.created = created;
         this.vehicles = vehicles;
+    }
+
+    public Invoice() {
     }
 
     public String getId() {

@@ -1,6 +1,6 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.config.JDBCConfig;
+import com.nixalevel.lesson10.config.HibernateFactoryUtil;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.*;
 import com.nixalevel.lesson10.service.*;
@@ -8,15 +8,8 @@ import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
-import java.util.*;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -31,7 +24,12 @@ public class Main {
     private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+
+    private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
+    private static final BusService HIBERNATE_AUTO_SERVICE_BUS_SERVICE = new BusService(new HibernateBusRepository());
+    private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(new HibernateMotorbikeRepository());
+    //private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
 
     public static void main(String[] args) throws ParseException, SQLException {
         /* Create all types of products */
@@ -271,7 +269,7 @@ public class Main {
         System.out.println(auto);*/
 
         /* JDBC */
-        JDBCConfig.getConnection();
+        /*JDBCConfig.getConnection();
         JDBC_AUTO_SERVICE.removeAll();
         JDBC_BUS_SERVICE.removeAll();
         JDBC_MOTORBIKE_SERVICE.removeAll();
@@ -287,15 +285,21 @@ public class Main {
         JDBC_MOTORBIKE_SERVICE.createVehicles(5);
         JDBC_MOTORBIKE_SERVICE.print();
 
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.getAll();
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.getAll();
 
-        INVOICE_SERVICE.getInvoiceExpensiveThan(500);
-        INVOICE_SERVICE.getCountOfInvoice();
-        INVOICE_SERVICE.updateCreatedTime("");
-        INVOICE_SERVICE.getGroupByAmount();
+        JDBC_INVOICE_SERVICE.getInvoiceExpensiveThan(500);
+        JDBC_INVOICE_SERVICE.getCountOfInvoice();
+        JDBC_INVOICE_SERVICE.updateCreatedTime("");
+        JDBC_INVOICE_SERVICE.getGroupByAmount();*/
+
+        /* Hibernate */
+        HibernateFactoryUtil.getSessionFactory();
+        HIBERNATE_AUTO_SERVICE.createVehicles(5);
+        HIBERNATE_AUTO_SERVICE.getAll();
+
     }
 
     /* UI */

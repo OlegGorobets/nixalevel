@@ -1,16 +1,30 @@
 package com.nixalevel.lesson10.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Vehicle {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     protected String id;
+    @Column(name="model")
     protected String model;
+    @Column(name="price")
     protected BigDecimal price;
     protected static int vehicleCount;
+    @Column(name="type")
     protected VehicleType type;
+    @ElementCollection
+    @CollectionTable(name="vehicle_details", joinColumns=@JoinColumn(name="id"))
+    @Column(name="details")
     protected List<String> details;
 
     public Vehicle() {

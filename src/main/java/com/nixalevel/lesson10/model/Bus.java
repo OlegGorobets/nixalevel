@@ -1,9 +1,13 @@
 package com.nixalevel.lesson10.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Bus")
 public class Bus extends Vehicle {
 
     private int numberOfSeats;
