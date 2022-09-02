@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Htbernate Configuration DTD//EN"
+        "http://www.hibernate.Org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hibernate</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <mapping class="com.nixalevel.lesson10.model.Vehicle"/>
+        <mapping class="com.nixalevel.lesson10.model.Auto"/>
+        <mapping class="com.nixalevel.lesson10.model.Bus"/>
+        <mapping class="com.nixalevel.lesson10.model.Motorbike"/>
+        <mapping class="com.nixalevel.lesson10.model.Invoice"/>
+    </session-factory>
+</hibernate-configuration>
