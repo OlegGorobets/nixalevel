@@ -1,6 +1,7 @@
 package com.nixalevel.lesson10;
 
 import com.nixalevel.lesson10.config.HibernateFactoryUtil;
+import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.*;
 import com.nixalevel.lesson10.service.*;
@@ -268,12 +269,37 @@ public class Main {
                 .build();
         System.out.println(auto);*/
 
+        /* Reflection */
+        /*AutoService autoServiceOne = ReflectionUtil.getClass(AutoService.class);
+        Field declaredFieldAutoServiceOne = autoServiceOne.getClass().getDeclaredField("instance");
+        declaredFieldAutoServiceOne.setAccessible(true);
+        System.out.println(declaredFieldAutoServiceOne.get(autoServiceOne).hashCode());
+        System.out.println(autoServiceOne.hashCode());
+
+        AutoService autoServiceTwo = ReflectionUtil.getClass(AutoService.class);
+        Field declaredFieldAutoServiceTwo = autoServiceTwo.getClass().getDeclaredField("instance");
+        declaredFieldAutoServiceTwo.setAccessible(true);
+        System.out.println(declaredFieldAutoServiceTwo.get(autoServiceTwo).hashCode());
+        System.out.println(autoServiceTwo.hashCode());
+
+        AutoRepository autoRepositoryOne = ReflectionUtil.getClass(AutoRepository.class);
+        Field declaredFieldAutoRepositoryOne = autoRepositoryOne.getClass().getDeclaredField("instance");
+        declaredFieldAutoRepositoryOne.setAccessible(true);
+        System.out.println(declaredFieldAutoRepositoryOne.get(autoRepositoryOne).hashCode());
+        System.out.println(autoRepositoryOne.hashCode());
+
+        AutoRepository autoRepositoryTwo = ReflectionUtil.getClass(AutoRepository.class);
+        Field declaredFieldAutoRepositoryTwo = autoRepositoryTwo.getClass().getDeclaredField("instance");
+        declaredFieldAutoRepositoryTwo.setAccessible(true);
+        System.out.println(declaredFieldAutoRepositoryTwo.get(autoRepositoryTwo).hashCode());
+        System.out.println(autoRepositoryTwo.hashCode());*/
+
         /* JDBC */
         /*JDBCConfig.getConnection();
         JDBC_AUTO_SERVICE.removeAll();
         JDBC_BUS_SERVICE.removeAll();
         JDBC_MOTORBIKE_SERVICE.removeAll();
-        INVOICE_SERVICE.removeAll();
+        JDBC_INVOICE_SERVICE.removeAll();
 
 
         JDBC_AUTO_SERVICE.createVehicles(5);
