@@ -1,5 +1,6 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.config.HibernateFactoryUtil;
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.*;
@@ -30,7 +31,6 @@ public class Main {
     private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
     private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
 
     private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
@@ -326,7 +326,7 @@ public class Main {
         JDBC_INVOICE_SERVICE.getCountOfInvoice();
         JDBC_INVOICE_SERVICE.updateCreatedTime("");
         JDBC_INVOICE_SERVICE.getGroupByAmount();*/
-        }
+
         /* Hibernate */
         HibernateFactoryUtil.getSessionFactory();
         HIBERNATE_AUTO_SERVICE.createVehicles(5);
