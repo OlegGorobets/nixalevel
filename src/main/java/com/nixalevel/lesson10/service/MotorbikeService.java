@@ -5,14 +5,13 @@ import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Motorbike;
 import com.nixalevel.lesson10.model.MotorbikeManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
+import com.nixalevel.lesson10.repository.JDBCMotorbikeRepository;
 import com.nixalevel.lesson10.repository.MotorbikeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Singleton
@@ -29,18 +28,23 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     public static MotorbikeService getInstance() {
         if (instance == null) {
-            instance = new MotorbikeService(MotorbikeRepository.getInstance());
+            instance = new MotorbikeService(JDBCMotorbikeRepository.getInstance());
         }
         return instance;
     }
 
     @Override
     protected Motorbike create() {
+        List<String> list = Arrays.asList("test1", "test2");
         return new Motorbike(
+                UUID.randomUUID().toString(),
                 "Model-" + RANDOM.nextInt(1000),
                 getRandomManufacturer(),
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                RANDOM.nextInt(200, 300)
+                RANDOM.nextInt(200, 300),
+                list,
+                RANDOM.nextInt(1, 100),
+                new Date()
         );
     }
 
@@ -117,6 +121,11 @@ public class MotorbikeService extends VehicleService<Motorbike> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
+    }
+
+    public boolean removeAll() {
+        repository.clear();
+        return true;
     }
 
     public Motorbike createDefaultMotorbike() {

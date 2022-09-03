@@ -82,6 +82,11 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     }
 
     @Override
+    public void clear() {
+
+    }
+
+    @Override
     public boolean delete(String id) {
         final Iterator<Motorbike> iterator = motorbikes.iterator();
         while (iterator.hasNext()) {

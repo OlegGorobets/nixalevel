@@ -94,6 +94,11 @@ public class AutoRepository implements CrudRepository<Auto> {
         return false;
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     private static class AutoCopy {
         static void copy(final Auto from, final Auto to) {
             to.setAutoManufacturer(from.getAutoManufacturer());

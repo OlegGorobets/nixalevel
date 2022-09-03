@@ -94,6 +94,11 @@ public class BusRepository implements CrudRepository<Bus> {
         return false;
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     private static class BusCopy {
         static void copy(final Bus from, final Bus to) {
             to.setBusManufacturer(from.getBusManufacturer());

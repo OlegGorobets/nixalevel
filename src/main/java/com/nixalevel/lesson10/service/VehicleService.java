@@ -5,7 +5,6 @@ import com.nixalevel.lesson10.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class VehicleService<T extends Vehicle> {
@@ -16,31 +15,22 @@ public abstract class VehicleService<T extends Vehicle> {
         this.repository = repository;
     }
 
-    public List<T> createVehicles(int count) {
-        final List<T> result = new LinkedList<>();
+    public void createVehicles(int count) {
         for (int i = 0; i < count; i++) {
             final T vehicle = create();
-            result.add(vehicle);
             repository.create(vehicle);
             LOGGER.info("Created " + vehicle.getClass().getSimpleName() + " {}", vehicle.getId());
         }
-        return result;
     }
 
     protected abstract T create();
 
     public void print() {
         List<T> vehicleList = repository.getAll();
-        for (int i = 0; i < vehicleList.size(); i++) {
-            System.out.printf("%d) %s%n", i, vehicleList.get(i));
+        for (T t : vehicleList) {
+            System.out.printf("%s%n", t);
         }
         LOGGER.info("Printed.");
-    }
-
-    public void printAll() {
-        for (T vehicle : repository.getAll()) {
-            LOGGER.info(vehicle.toString());
-        }
     }
 
     public boolean deleteProductByIndex(List<T> vehicles, int index) {
