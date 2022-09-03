@@ -1,22 +1,19 @@
 package com.nixalevel.lesson10;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
-import com.nixalevel.lesson10.model.*;
+import com.nixalevel.lesson10.model.Vehicle;
 import com.nixalevel.lesson10.repository.*;
 import com.nixalevel.lesson10.service.*;
-import com.nixalevel.lesson10.utility.*;
+import com.nixalevel.lesson10.utility.Container;
+import com.nixalevel.lesson10.utility.Garage;
+//import com.nixalevel.lesson10.utility.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
-import java.util.*;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -27,13 +24,12 @@ public class Main {
     private static final Container<Vehicle> CONTAINER = new Container<>();
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
-
     private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
 
-    public static void main(String[] args) throws ParseException, SQLException {
+    public static void main(String[] args) throws ParseException, SQLException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
         /* Create all types of products */
         /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createVehicles(5);
@@ -270,12 +266,37 @@ public class Main {
                 .build();
         System.out.println(auto);*/
 
+        /* Reflection */
+        /*AutoService autoServiceOne = ReflectionUtil.getClass(AutoService.class);
+        Field declaredFieldAutoServiceOne = autoServiceOne.getClass().getDeclaredField("instance");
+        declaredFieldAutoServiceOne.setAccessible(true);
+        System.out.println(declaredFieldAutoServiceOne.get(autoServiceOne).hashCode());
+        System.out.println(autoServiceOne.hashCode());
+
+        AutoService autoServiceTwo = ReflectionUtil.getClass(AutoService.class);
+        Field declaredFieldAutoServiceTwo = autoServiceTwo.getClass().getDeclaredField("instance");
+        declaredFieldAutoServiceTwo.setAccessible(true);
+        System.out.println(declaredFieldAutoServiceTwo.get(autoServiceTwo).hashCode());
+        System.out.println(autoServiceTwo.hashCode());
+
+        AutoRepository autoRepositoryOne = ReflectionUtil.getClass(AutoRepository.class);
+        Field declaredFieldAutoRepositoryOne = autoRepositoryOne.getClass().getDeclaredField("instance");
+        declaredFieldAutoRepositoryOne.setAccessible(true);
+        System.out.println(declaredFieldAutoRepositoryOne.get(autoRepositoryOne).hashCode());
+        System.out.println(autoRepositoryOne.hashCode());
+
+        AutoRepository autoRepositoryTwo = ReflectionUtil.getClass(AutoRepository.class);
+        Field declaredFieldAutoRepositoryTwo = autoRepositoryTwo.getClass().getDeclaredField("instance");
+        declaredFieldAutoRepositoryTwo.setAccessible(true);
+        System.out.println(declaredFieldAutoRepositoryTwo.get(autoRepositoryTwo).hashCode());
+        System.out.println(autoRepositoryTwo.hashCode());*/
+
         /* JDBC */
         JDBCConfig.getConnection();
         JDBC_AUTO_SERVICE.removeAll();
         JDBC_BUS_SERVICE.removeAll();
         JDBC_MOTORBIKE_SERVICE.removeAll();
-        INVOICE_SERVICE.removeAll();
+        JDBC_INVOICE_SERVICE.removeAll();
 
 
         JDBC_AUTO_SERVICE.createVehicles(5);
@@ -287,15 +308,15 @@ public class Main {
         JDBC_MOTORBIKE_SERVICE.createVehicles(5);
         JDBC_MOTORBIKE_SERVICE.print();
 
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.createInvoice(5);
-        INVOICE_SERVICE.getAll();
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.createInvoice(5);
+        JDBC_INVOICE_SERVICE.getAll();
 
-        INVOICE_SERVICE.getInvoiceExpensiveThan(500);
-        INVOICE_SERVICE.getCountOfInvoice();
-        INVOICE_SERVICE.updateCreatedTime("");
-        INVOICE_SERVICE.getGroupByAmount();
+        JDBC_INVOICE_SERVICE.getInvoiceExpensiveThan(500);
+        JDBC_INVOICE_SERVICE.getCountOfInvoice();
+        JDBC_INVOICE_SERVICE.updateCreatedTime("");
+        JDBC_INVOICE_SERVICE.getGroupByAmount();
     }
 
     /* UI */
