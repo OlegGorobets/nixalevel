@@ -1,19 +1,16 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.AutoRepository;
-import com.nixalevel.lesson10.repository.BusRepository;
-import com.nixalevel.lesson10.repository.MotorbikeRepository;
-import com.nixalevel.lesson10.service.AutoService;
-import com.nixalevel.lesson10.service.BusService;
-import com.nixalevel.lesson10.service.MotorbikeService;
-import com.nixalevel.lesson10.service.VehicleService;
+import com.nixalevel.lesson10.repository.*;
+import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -259,7 +256,7 @@ public class Main {
         }*/
 
         /* Builder */
-        Auto auto = new Auto.Builder()
+        /*Auto auto = new Auto.Builder()
                 .withAutoManufacturer(AutoManufacturer.TOYOTA)
                 .withCount(1)
                 .withPrice(BigDecimal.valueOf(7000000))
