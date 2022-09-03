@@ -1,18 +1,17 @@
 package com.nixalevel.lesson10;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
-import com.nixalevel.lesson10.model.*;
+import com.nixalevel.lesson10.model.Vehicle;
 import com.nixalevel.lesson10.repository.*;
 import com.nixalevel.lesson10.service.*;
-import com.nixalevel.lesson10.utility.*;
+import com.nixalevel.lesson10.utility.Container;
+import com.nixalevel.lesson10.utility.Garage;
+//import com.nixalevel.lesson10.utility.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.lang.reflect.Field;
@@ -269,32 +268,6 @@ public class Main {
                 .withBodyType("Hatchback")
                 .withModel("TRUENO")
                 .build();
-        System.out.println(auto);*/
-
-        /* Reflection */
-        AutoService autoServiceOne = ReflectionUtil.getClass(AutoService.class);
-        Field declaredFieldAutoServiceOne = autoServiceOne.getClass().getDeclaredField("instance");
-        declaredFieldAutoServiceOne.setAccessible(true);
-        System.out.println(declaredFieldAutoServiceOne.get(autoServiceOne).hashCode());
-        System.out.println(autoServiceOne.hashCode());
-
-        AutoService autoServiceTwo = ReflectionUtil.getClass(AutoService.class);
-        Field declaredFieldAutoServiceTwo = autoServiceTwo.getClass().getDeclaredField("instance");
-        declaredFieldAutoServiceTwo.setAccessible(true);
-        System.out.println(declaredFieldAutoServiceTwo.get(autoServiceTwo).hashCode());
-        System.out.println(autoServiceTwo.hashCode());
-
-        AutoRepository autoRepositoryOne = ReflectionUtil.getClass(AutoRepository.class);
-        Field declaredFieldAutoRepositoryOne = autoRepositoryOne.getClass().getDeclaredField("instance");
-        declaredFieldAutoRepositoryOne.setAccessible(true);
-        System.out.println(declaredFieldAutoRepositoryOne.get(autoRepositoryOne).hashCode());
-        System.out.println(autoRepositoryOne.hashCode());
-
-        AutoRepository autoRepositoryTwo = ReflectionUtil.getClass(AutoRepository.class);
-        Field declaredFieldAutoRepositoryTwo = autoRepositoryTwo.getClass().getDeclaredField("instance");
-        declaredFieldAutoRepositoryTwo.setAccessible(true);
-        System.out.println(declaredFieldAutoRepositoryTwo.get(autoRepositoryTwo).hashCode());
-        System.out.println(autoRepositoryTwo.hashCode());
         System.out.println(auto);*/
 
         /* JDBC */
