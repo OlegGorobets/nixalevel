@@ -15,19 +15,19 @@ public abstract class Vehicle {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     protected String id;
-    @Column(name="model")
+    @Column(name = "model")
     protected String model;
-    @Column(name="price")
+    @Column(name = "price")
     protected BigDecimal price;
     protected static int vehicleCount;
-    @Column(name="type")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     protected VehicleType type;
-    @ElementCollection
-    @CollectionTable(name="vehicle_details", joinColumns=@JoinColumn(name="id"))
-    @Column(name="details")
+    @Column(name = "details")
+    @ElementCollection(fetch = FetchType.EAGER)
     protected List<String> details;
 
-    public Vehicle() {
+    protected Vehicle() {
         this.id = UUID.randomUUID().toString();
     }
 

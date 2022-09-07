@@ -1,20 +1,26 @@
 package com.nixalevel.lesson10.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Bus")
+@Table(name = "bus")
 public class Bus extends Vehicle {
-
+    @Column(name = "bus_number_of_seats")
     private int numberOfSeats;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "bus_manufacturer")
     private BusManufacturer busManufacturer;
+    @Column(name = "bus_created")
     private Date created;
+    @Column(name = "bus_count")
     private int count;
     private static int vehicleCount;
+
+    public Bus() {
+    }
 
     public int getVehicleCount() {
         return vehicleCount;
@@ -36,8 +42,8 @@ public class Bus extends Vehicle {
     }
 
     public Bus(String id, String model, BusManufacturer busManufacturer, BigDecimal price, int numberOfSeats,
-                List<String> details, int count, Date created) {
-        super(id, model, price, VehicleType.BUS , details);
+               List<String> details, int count, Date created) {
+        super(id, model, price, VehicleType.BUS, details);
         this.busManufacturer = busManufacturer;
         this.numberOfSeats = numberOfSeats;
         this.count = count;

@@ -1,17 +1,12 @@
-package com.nixalevel.lesson10.repository;
+package com.nixalevel.lesson10.repository.hibernate;
 
 import com.nixalevel.lesson10.config.HibernateFactoryUtil;
-import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.Auto;
-import com.nixalevel.lesson10.model.AutoManufacturer;
-import com.nixalevel.lesson10.model.Vehicle;
+import com.nixalevel.lesson10.repository.CrudRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +32,16 @@ public class HibernateAutoRepository implements CrudRepository<Auto> {
 
     @Override
     public Optional<Auto> findById(String id) {
-        final String sql = "SELECT * FROM public.\"Auto\" WHERE auto_id = ?";
-        return Optional.empty();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Auto auto = session.get(Auto.class, id);
+        transaction.commit();
+        session.close();
+        if (auto != null) {
+            return Optional.of(auto);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -75,17 +78,42 @@ public class HibernateAutoRepository implements CrudRepository<Auto> {
 
     @Override
     public boolean update(Auto auto) {
-
-        return false;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        if (findById(auto.getId()).isPresent()) {
+            Auto newAuto = session.get(Auto.class, auto.getId());
+            session.update(newAuto);
+            transaction.commit();
+            session.close();
+            return true;
+        } else {
+            System.out.println("No auto.");
+            return false;
+        }
     }
 
     @Override
     public boolean delete(String id) {
-
-        return true;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        if (findById(id).isPresent()) {
+            Auto auto = session.get(Auto.class, id);
+            session.delete(auto);
+            transaction.commit();
+            session.close();
+            return true;
+        } else {
+            System.out.println("No auto.");
+            return false;
+        }
     }
 
     public void clear() {
-
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.createQuery("delete from Auto")
+                .executeUpdate();
+        transaction.commit();
+        session.close();
     }
 }

@@ -5,8 +5,7 @@ import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Motorbike;
 import com.nixalevel.lesson10.model.MotorbikeManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
-import com.nixalevel.lesson10.repository.JDBCMotorbikeRepository;
-import com.nixalevel.lesson10.repository.MotorbikeRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateMotorbikeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,7 @@ public class MotorbikeService extends VehicleService<Motorbike> {
 
     public static MotorbikeService getInstance() {
         if (instance == null) {
-            instance = new MotorbikeService(JDBCMotorbikeRepository.getInstance());
+            instance = new MotorbikeService(HibernateMotorbikeRepository.getInstance());
         }
         return instance;
     }
@@ -121,11 +120,6 @@ public class MotorbikeService extends VehicleService<Motorbike> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
-    }
-
-    public boolean removeAll() {
-        repository.clear();
-        return true;
     }
 
     public Motorbike createDefaultMotorbike() {

@@ -7,14 +7,15 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Invoice")
+@Table(name = "invoice")
 public class Invoice {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
+    @Column(name = "created")
     private Date created;
-    @OneToMany(targetEntity=Invoice.class, mappedBy="vehicles", fetch= FetchType.EAGER)
+    @OneToMany(targetEntity = Vehicle.class, fetch = FetchType.EAGER)
     private List<Vehicle> vehicles;
 
     public Invoice(String id, Date created, List<Vehicle> vehicles) {

@@ -6,18 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Auto")
+@Table(name = "auto")
 public class Auto extends Vehicle {
-    @Column(name="auto_body_type")
+    @Column(name = "auto_body_type")
     private String bodyType;
-    @Column(name="auto_manufacturer")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auto_manufacturer")
     private AutoManufacturer autoManufacturer;
-    @Column(name="auto_created")
+    @Column(name = "auto_created")
     private Date created;
-    @Column(name="auto_count")
+    @Column(name = "auto_count")
     private int count;
 
-    @OneToMany(targetEntity=Auto.class, mappedBy="engine", fetch= FetchType.EAGER)
+    @Transient
     private List<String> engine;
     private static int vehicleCount;
 
@@ -57,7 +58,7 @@ public class Auto extends Vehicle {
 
     public Auto(String id, String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType,
                 List<String> details, int count, Date created) {
-        super(id, model, price, VehicleType.AUTO , details);
+        super(id, model, price, VehicleType.AUTO, details);
         this.autoManufacturer = autoManufacturer;
         this.bodyType = bodyType;
         this.count = count;
@@ -66,6 +67,7 @@ public class Auto extends Vehicle {
 
     public static class Builder {
         private final Auto newAuto;
+
         public Builder() {
             newAuto = new Auto();
         }

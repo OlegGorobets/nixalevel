@@ -1,4 +1,4 @@
-package com.nixalevel.lesson10.repository;
+package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class HibernateInvoiceRepository {
+public class JDBCInvoiceRepository {
     private static final JDBCAutoRepository JDBC_AUTO_REPOSITORY = new JDBCAutoRepository();
     private static final JDBCBusRepository JDBC_BUS_REPOSITORY = new JDBCBusRepository();
     private static final JDBCMotorbikeRepository JDBC_MOTORBIKE_REPOSITORY = new JDBCMotorbikeRepository();
-    private static HibernateInvoiceRepository instance;
+    private static JDBCInvoiceRepository instance;
 
     private final Connection connection;
 
-    public HibernateInvoiceRepository() {
+    public JDBCInvoiceRepository() {
         connection = JDBCConfig.getConnection();
     }
 
-    public static HibernateInvoiceRepository getInstance() {
+    public static JDBCInvoiceRepository getInstance() {
         if (instance == null) {
-            instance = new HibernateInvoiceRepository();
+            instance = new JDBCInvoiceRepository();
         }
         return instance;
     }

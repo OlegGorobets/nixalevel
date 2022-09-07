@@ -1,8 +1,9 @@
-package com.nixalevel.lesson10.repository;
+package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
+import com.nixalevel.lesson10.repository.CrudRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,17 +11,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class HibernateBusRepository implements CrudRepository<Bus> {
-    private static HibernateBusRepository instance;
+public class JDBCBusRepository implements CrudRepository<Bus> {
+    private static JDBCBusRepository instance;
     private final Connection connection;
 
-    public HibernateBusRepository() {
+    public JDBCBusRepository() {
         connection = JDBCConfig.getConnection();
     }
 
-    public static HibernateBusRepository getInstance() {
+    public static JDBCBusRepository getInstance() {
         if (instance == null) {
-            instance = new HibernateBusRepository();
+            instance = new JDBCBusRepository();
         }
         return instance;
     }

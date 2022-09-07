@@ -1,8 +1,9 @@
-package com.nixalevel.lesson10.repository;
+package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.Motorbike;
 import com.nixalevel.lesson10.model.MotorbikeManufacturer;
+import com.nixalevel.lesson10.repository.CrudRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,17 +11,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class HibernateMotorbikeRepository implements CrudRepository<Motorbike> {
-    private static HibernateMotorbikeRepository instance;
+public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
+    private static JDBCMotorbikeRepository instance;
     private final Connection connection;
 
-    public HibernateMotorbikeRepository() {
+    public JDBCMotorbikeRepository() {
         connection = JDBCConfig.getConnection();
     }
 
-    public static HibernateMotorbikeRepository getInstance() {
+    public static JDBCMotorbikeRepository getInstance() {
         if (instance == null) {
-            instance = new HibernateMotorbikeRepository();
+            instance = new JDBCMotorbikeRepository();
         }
         return instance;
     }

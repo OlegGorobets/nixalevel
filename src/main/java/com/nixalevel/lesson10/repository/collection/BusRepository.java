@@ -1,8 +1,9 @@
-package com.nixalevel.lesson10.repository;
+package com.nixalevel.lesson10.repository.collection;
 
 import com.nixalevel.lesson10.annotation.Autowired;
 import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Bus;
+import com.nixalevel.lesson10.repository.CrudRepository;
 
 import java.util.Iterator;
 import java.util.LinkedList;

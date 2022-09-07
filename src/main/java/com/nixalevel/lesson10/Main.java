@@ -1,22 +1,31 @@
 package com.nixalevel.lesson10;
 
 import com.nixalevel.lesson10.config.HibernateFactoryUtil;
-import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.*;
+import com.nixalevel.lesson10.repository.hibernate.HibernateAutoRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateBusRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateInvoiceRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateMotorbikeRepository;
+import com.nixalevel.lesson10.repository.collection.AutoRepository;
+import com.nixalevel.lesson10.repository.collection.BusRepository;
+import com.nixalevel.lesson10.repository.collection.MotorbikeRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCAutoRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCBusRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;
 import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -31,12 +40,12 @@ public class Main {
     private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+    //private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
 
     private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
-    private static final BusService HIBERNATE_AUTO_SERVICE_BUS_SERVICE = new BusService(new HibernateBusRepository());
+    private static final BusService HIBERNATE_BUS_SERVICE = new BusService(new HibernateBusRepository());
     private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(new HibernateMotorbikeRepository());
-    //private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
+    private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
 
     public static void main(String[] args) throws ParseException, SQLException {
         /* Create all types of products */
@@ -330,7 +339,45 @@ public class Main {
         /* Hibernate */
         HibernateFactoryUtil.getSessionFactory();
         HIBERNATE_AUTO_SERVICE.createVehicles(5);
-        HIBERNATE_AUTO_SERVICE.getAll();
+        HIBERNATE_BUS_SERVICE.createVehicles(5);
+        HIBERNATE_MOTORBIKE_SERVICE.createVehicles(5);
+
+        /*HIBERNATE_AUTO_SERVICE.removeAll();
+        HIBERNATE_BUS_SERVICE.removeAll();
+        HIBERNATE_MOTORBIKE_SERVICE.removeAll();*/
+
+        HIBERNATE_AUTO_SERVICE.getAll().forEach(System.out::println);
+        HIBERNATE_BUS_SERVICE.getAll().forEach(System.out::println);
+        HIBERNATE_MOTORBIKE_SERVICE.getAll().forEach(System.out::println);
+
+        List<Vehicle> vehicleList = Stream.of(HIBERNATE_AUTO_SERVICE.getAll(),
+                        HIBERNATE_BUS_SERVICE.getAll(),
+                        HIBERNATE_MOTORBIKE_SERVICE.getAll())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<Vehicle> forInvoiceOne = new ArrayList<>();
+        forInvoiceOne.add(vehicleList.get(0));
+        forInvoiceOne.add(vehicleList.get(1));
+        forInvoiceOne.add(vehicleList.get(2));
+        List<Vehicle> forInvoiceTwo = new ArrayList<>();
+        forInvoiceTwo.add(vehicleList.get(3));
+        forInvoiceTwo.add(vehicleList.get(4));
+        forInvoiceTwo.add(vehicleList.get(5));
+        List<Vehicle> forInvoiceThree = new ArrayList<>();
+        forInvoiceThree.add(vehicleList.get(6));
+        forInvoiceThree.add(vehicleList.get(7));
+        forInvoiceThree.add(vehicleList.get(8));
+
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceOne);
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceTwo);
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceThree);
+
+        HIBERNATE_INVOICE_SERVICE.getAll().forEach(System.out::println);
+
+        HIBERNATE_INVOICE_SERVICE.getInvoiceCount();
+        HIBERNATE_INVOICE_SERVICE.setCreated("a1166fb5-09bd-4479-8ee9-5a729c1089bb", new Date());
+        HIBERNATE_INVOICE_SERVICE.getInvoiceExpensiveThan(1500);
+        HIBERNATE_INVOICE_SERVICE.getGroupByAmount();
 
     }
 
