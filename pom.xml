@@ -46,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspart>true</addClasspart>
+                            <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.nixalevel.lesson10.Main</mainClass>
                         </manifest>
