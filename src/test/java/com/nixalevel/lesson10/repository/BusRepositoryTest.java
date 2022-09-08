@@ -1,3 +1,4 @@
+/*
 package com.nixalevel.lesson10.repository;
 
 import com.nixalevel.lesson10.model.Bus;
@@ -91,4 +92,4 @@ class BusRepositoryTest {
         final boolean actual = target.delete("1234");
         Assertions.assertFalse(actual);
     }
-}
+}*/

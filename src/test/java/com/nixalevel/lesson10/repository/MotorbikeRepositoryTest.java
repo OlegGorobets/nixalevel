@@ -1,3 +1,4 @@
+/*
 package com.nixalevel.lesson10.repository;
 
 import com.nixalevel.lesson10.model.Motorbike;
@@ -90,4 +91,4 @@ class MotorbikeRepositoryTest {
         final boolean actual = target.delete("1234");
         Assertions.assertFalse(actual);
     }
-}
+}*/
