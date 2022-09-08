@@ -45,7 +45,11 @@
                 <version>3.1.1</version>
                 <configuration>
                     <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <addClasspart>true</addClasspart>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.nixalevel.lesson10.Main</mainClass>
+                        </manifest>
                     </archive>
                 </configuration>
             </plugin>
