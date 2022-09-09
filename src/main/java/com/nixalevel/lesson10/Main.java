@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 
 public class Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final AutoService AUTO_SERVICE = new AutoService(new AutoRepository());
     private static final BusService BUS_SERVICE = new BusService(new BusRepository());
     private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService(new MotorbikeRepository());
