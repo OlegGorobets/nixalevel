@@ -1,3 +1,4 @@
+/*
 package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
@@ -208,3 +209,4 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
         }
     }
 }
+*/

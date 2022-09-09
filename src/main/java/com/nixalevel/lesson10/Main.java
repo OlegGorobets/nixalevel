@@ -9,9 +9,9 @@ import com.nixalevel.lesson10.repository.hibernate.HibernateMotorbikeRepository;
 import com.nixalevel.lesson10.repository.collection.AutoRepository;
 import com.nixalevel.lesson10.repository.collection.BusRepository;
 import com.nixalevel.lesson10.repository.collection.MotorbikeRepository;
-import com.nixalevel.lesson10.repository.jdbc.JDBCAutoRepository;
+/*import com.nixalevel.lesson10.repository.jdbc.JDBCAutoRepository;
 import com.nixalevel.lesson10.repository.jdbc.JDBCBusRepository;
-import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;*/
 import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.slf4j.Logger;
@@ -37,10 +37,10 @@ public class Main {
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
 
-    private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
+    /*private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    //private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());*/
 
     private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
     private static final BusService HIBERNATE_BUS_SERVICE = new BusService(new HibernateBusRepository());

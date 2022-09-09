@@ -1,3 +1,4 @@
+/*
 package com.nixalevel.lesson10.config;
 
 import java.sql.Connection;
@@ -22,3 +23,4 @@ public class JDBCConfig {
         return connection;
     }
 }
+*/
