@@ -1,6 +1,5 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.config.HibernateFactoryUtil;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.hibernate.HibernateAutoRepository;
 import com.nixalevel.lesson10.repository.hibernate.HibernateBusRepository;
@@ -14,6 +13,7 @@ import com.nixalevel.lesson10.repository.jdbc.JDBCBusRepository;
 import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;*/
 import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 
 public class Main {
-    //private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final AutoService AUTO_SERVICE = new AutoService(new AutoRepository());
     private static final BusService BUS_SERVICE = new BusService(new BusRepository());
     private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService(new MotorbikeRepository());
@@ -337,14 +337,14 @@ public class Main {
         JDBC_INVOICE_SERVICE.getGroupByAmount();*/
 
         /* Hibernate */
-        HibernateFactoryUtil.getSessionFactory();
+        /*HibernateFactoryUtil.getSessionFactory();
         HIBERNATE_AUTO_SERVICE.createVehicles(5);
         HIBERNATE_BUS_SERVICE.createVehicles(5);
         HIBERNATE_MOTORBIKE_SERVICE.createVehicles(5);
 
-        /*HIBERNATE_AUTO_SERVICE.removeAll();
+        *//*HIBERNATE_AUTO_SERVICE.removeAll();
         HIBERNATE_BUS_SERVICE.removeAll();
-        HIBERNATE_MOTORBIKE_SERVICE.removeAll();*/
+        HIBERNATE_MOTORBIKE_SERVICE.removeAll();*//*
 
         HIBERNATE_AUTO_SERVICE.getAll().forEach(System.out::println);
         HIBERNATE_BUS_SERVICE.getAll().forEach(System.out::println);
@@ -377,8 +377,15 @@ public class Main {
         HIBERNATE_INVOICE_SERVICE.getInvoiceCount();
         HIBERNATE_INVOICE_SERVICE.setCreated("a1166fb5-09bd-4479-8ee9-5a729c1089bb", new Date());
         HIBERNATE_INVOICE_SERVICE.getInvoiceExpensiveThan(1500);
-        HIBERNATE_INVOICE_SERVICE.getGroupByAmount();
+        HIBERNATE_INVOICE_SERVICE.getGroupByAmount();*/
 
+        /* Flyway */
+        Flyway flyway = Flyway.configure()
+                .dataSource("jdbc:postgresql://localhost:5432/hibernate", "postgres", "root")
+                .baselineOnMigrate(true)
+                .locations("db/migration")
+                .load();
+        flyway.migrate();
     }
 
     /* UI */
