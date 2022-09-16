@@ -1,8 +1,10 @@
-package com.nixalevel.lesson10.repository;
+/*
+package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
+import com.nixalevel.lesson10.repository.CrudRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -206,3 +208,4 @@ public class JDBCBusRepository implements CrudRepository<Bus> {
         }
     }
 }
+*/

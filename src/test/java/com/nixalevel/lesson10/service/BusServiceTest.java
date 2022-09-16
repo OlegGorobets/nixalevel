@@ -1,3 +1,4 @@
+/*
 package com.nixalevel.lesson10.service;
 
 import com.nixalevel.lesson10.model.Bus;
@@ -129,4 +130,4 @@ class BusServiceTest {
         Mockito.when(busRepository.findById(anyString())).thenReturn(Optional.empty());
         Assertions.assertFalse(target.filterByManufacturerById(anyString(), BusManufacturer.ICARUS));
     }
-}
+}*/

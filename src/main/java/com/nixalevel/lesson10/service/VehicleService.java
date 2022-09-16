@@ -47,6 +47,23 @@ public abstract class VehicleService<T extends Vehicle> {
         return true;
     }
 
+    public boolean remove(String id) {
+        repository.delete(id);
+        LOGGER.info("Removed.");
+        return true;
+    }
+
+    public boolean change(T vehicle) {
+        repository.update(vehicle);
+        LOGGER.info("Changed.");
+        return true;
+    }
+
+    public boolean removeAll() {
+        repository.clear();
+        return true;
+    }
+
     public List<T> getAll() {
         return repository.getAll();
     }

@@ -1,4 +1,5 @@
-package com.nixalevel.lesson10.repository;
+/*
+package com.nixalevel.lesson10.repository.jdbc;
 
 import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
@@ -264,3 +265,4 @@ public class JDBCInvoiceRepository {
         return invoiceId;
     }
 }
+*/

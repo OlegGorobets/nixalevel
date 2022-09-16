@@ -4,9 +4,8 @@ import com.nixalevel.lesson10.annotation.Autowired;
 import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Bus;
 import com.nixalevel.lesson10.model.BusManufacturer;
-import com.nixalevel.lesson10.repository.BusRepository;
 import com.nixalevel.lesson10.repository.CrudRepository;
-import com.nixalevel.lesson10.repository.JDBCBusRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateBusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,7 @@ public class BusService extends VehicleService<Bus> {
 
     public static BusService getInstance() {
         if (instance == null) {
-            instance = new BusService(JDBCBusRepository.getInstance());
+            instance = new BusService(HibernateBusRepository.getInstance());
         }
         return instance;
     }
@@ -120,11 +119,6 @@ public class BusService extends VehicleService<Bus> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
-    }
-
-    public boolean removeAll() {
-        repository.clear();
-        return true;
     }
 
     public Bus createDefaultBus() {

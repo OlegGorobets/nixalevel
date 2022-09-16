@@ -5,7 +5,7 @@ import com.nixalevel.lesson10.annotation.Singleton;
 import com.nixalevel.lesson10.model.Auto;
 import com.nixalevel.lesson10.model.AutoManufacturer;
 import com.nixalevel.lesson10.repository.CrudRepository;
-import com.nixalevel.lesson10.repository.JDBCAutoRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateAutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class AutoService extends VehicleService<Auto> {
 
     public static AutoService getInstance() {
         if (instance == null) {
-            instance = new AutoService(JDBCAutoRepository.getInstance());
+            instance = new AutoService(HibernateAutoRepository.getInstance());
         }
         return instance;
     }
@@ -112,11 +112,6 @@ public class AutoService extends VehicleService<Auto> {
                     "\"" + id + "\"" + " not found");
         }
         return isFind.get();
-    }
-
-    public boolean removeAll() {
-        repository.clear();
-        return true;
     }
 
     public Auto createDefaultAuto() {

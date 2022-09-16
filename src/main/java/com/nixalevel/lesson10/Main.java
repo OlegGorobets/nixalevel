@@ -1,20 +1,31 @@
 package com.nixalevel.lesson10;
 
-import com.nixalevel.lesson10.config.JDBCConfig;
 import com.nixalevel.lesson10.model.*;
-import com.nixalevel.lesson10.repository.*;
+import com.nixalevel.lesson10.repository.hibernate.HibernateAutoRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateBusRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateInvoiceRepository;
+import com.nixalevel.lesson10.repository.hibernate.HibernateMotorbikeRepository;
+import com.nixalevel.lesson10.repository.collection.AutoRepository;
+import com.nixalevel.lesson10.repository.collection.BusRepository;
+import com.nixalevel.lesson10.repository.collection.MotorbikeRepository;
+/*import com.nixalevel.lesson10.repository.jdbc.JDBCAutoRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCBusRepository;
+import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;*/
 import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
-//import org.hibernate.annotations.common.reflection.ReflectionUtil;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -26,17 +37,17 @@ public class Main {
 
     private static final Garage<Vehicle> GARAGE = new Garage<>();
 
-    private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
+    /*private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
     private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
     private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());
+    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());*/
 
-    //private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
-    //private static final BusService HIBERNATE_AUTO_SERVICE_BUS_SERVICE = new BusService(new HibernateBusRepository());
-    //private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(new HibernateMotorbikeRepository());
-    //private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
+    private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
+    private static final BusService HIBERNATE_BUS_SERVICE = new BusService(new HibernateBusRepository());
+    private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(new HibernateMotorbikeRepository());
+    private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
 
-    public static void main(String[] args) throws ParseException, SQLException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
+    public static void main(String[] args) throws ParseException, SQLException {
         /* Create all types of products */
         /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createVehicles(5);
@@ -51,35 +62,35 @@ public class Main {
         BUS_SERVICE.saveBuses(buses);
         MOTORBIKE_SERVICE.saveMotorbikes(motorbikes);*/
 
-            /* Display in console */
+        /* Display in console */
         /*LOGGER.info("\nCreate all types of products");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
         MOTORBIKE_SERVICE.printAll();*/
 
-            /* Change one specific product */
+        /* Change one specific product */
         /*AUTO_SERVICE.changeProductByIndex(autos, 1, "Model-Test123");
         BUS_SERVICE.changeProductByIndex(buses, 0, 10);
         MOTORBIKE_SERVICE.changeProductByIndex(motorbikes, 1, 100);*/
 
-            /* Display change in console */
+        /* Display change in console */
         /*LOGGER.info("\nChange one specific product");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
         MOTORBIKE_SERVICE.printAll();*/
 
-            /* Delete a specific product */
+        /* Delete a specific product */
         /*AUTO_SERVICE.deleteProductByIndex(autos, 0);
         BUS_SERVICE.deleteProductByIndex(buses, 1);
         MOTORBIKE_SERVICE.deleteProductByIndex(motorbikes, 0);*/
 
-            /* Display change in console */
+        /* Display change in console */
         /*LOGGER.info("\nDelete a specific product");
         AUTO_SERVICE.printAll();
         BUS_SERVICE.printAll();
         MOTORBIKE_SERVICE.printAll();*/
 
-            /* Optional */
+        /* Optional */
         /*LOGGER.info("\nOptional");
         AUTO_SERVICE.findOrCreateDefaultAuto(autos.get(0).getId());
         AUTO_SERVICE.findAndCreateDefaultAuto(autos.get(0).getId());
@@ -96,7 +107,7 @@ public class Main {
         MOTORBIKE_SERVICE.findOrThrowException(motorbikes.get(0).getId());
         MOTORBIKE_SERVICE.filterByManufacturerById(motorbikes.get(0).getId(), MotorbikeManufacturer.KAWASAKI);*/
 
-            /* Container */
+        /* Container */
         /*LOGGER.info("\nContainer");
         CONTAINER.add(new Auto("AutoContainer", AutoManufacturer.BMW, BigDecimal.TEN, "AutoContainer"));
         CONTAINER.add(new Bus("AutoContainer", BusManufacturer.MAN, BigDecimal.TEN, 15));
@@ -105,7 +116,7 @@ public class Main {
         CONTAINER.applyDiscount();
         CONTAINER.increasePrice(11);*/
 
-            /* Garage */
+        /* Garage */
         /*LOGGER.info("\nGarage");
         GARAGE.add(auto);
         GARAGE.add(bus);
@@ -128,7 +139,7 @@ public class Main {
         LOGGER.info(GARAGE.remove(GARAGE.getRestyling(motorbike)));
         LOGGER.info(GARAGE.printAll());*/
 
-            /* Comparator */
+        /* Comparator */
         /*LOGGER.info("\nComparator");
         vehicles.addAll(MOTORBIKE_SERVICE.createVehicles(5));
         for (Vehicle vehicle : vehicles) {
@@ -160,7 +171,7 @@ public class Main {
             LOGGER.info(vehicle.toString());
         }*/
 
-            /* UI */
+        /* UI */
         /*final Action[] actions = Action.values();
         final List<String> names = getNames(actions);
         Command command;
@@ -168,7 +179,7 @@ public class Main {
             command = executeCommand(actions, names);
         } while (command != null);*/
 
-            /* BinaryTree */
+        /* BinaryTree */
         /*BinaryTree<Vehicle> binaryTree = new BinaryTree<>();
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(6), "TEST"));
         binaryTree.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.valueOf(4), "TEST"));
@@ -181,7 +192,7 @@ public class Main {
         binaryTree.print();
         binaryTree.sumTree();*/
 
-            /* Stream API */
+        /* Stream API */
         /*StreamApi streamApi = new StreamApi();
         System.out.println("Create collection Vehicles");
         final List<Auto> autos = AUTO_SERVICE.createVehicles(1);
@@ -245,7 +256,7 @@ public class Main {
         vehicles.add(new Auto("TEST", AutoManufacturer.BMW, BigDecimal.TEN, "TEST", detailAutoThree));
         System.out.println(streamApi.checkDetail(vehicles, "tires"));*/
 
-            /* IO/NIO */
+        /* IO/NIO */
         /*ReadFromFile readFromFile = new ReadFromFile();
         final List<Vehicle> vehicles = new LinkedList<>();
         final List<String> filePaths = new LinkedList<>();
@@ -263,7 +274,7 @@ public class Main {
             System.out.println(vehicle);
         }*/
 
-            /* Builder */
+        /* Builder */
         /*Auto auto = new Auto.Builder()
                 .withAutoManufacturer(AutoManufacturer.TOYOTA)
                 .withCount(1)
@@ -303,7 +314,7 @@ public class Main {
         JDBC_AUTO_SERVICE.removeAll();
         JDBC_BUS_SERVICE.removeAll();
         JDBC_MOTORBIKE_SERVICE.removeAll();
-        JDBC_INVOICE_SERVICE.removeAll();
+        INVOICE_SERVICE.removeAll();
 
 
         JDBC_AUTO_SERVICE.createVehicles(5);
@@ -324,7 +335,58 @@ public class Main {
         JDBC_INVOICE_SERVICE.getCountOfInvoice();
         JDBC_INVOICE_SERVICE.updateCreatedTime("");
         JDBC_INVOICE_SERVICE.getGroupByAmount();*/
-        }
+
+        /* Hibernate */
+        /*HibernateFactoryUtil.getSessionFactory();
+        HIBERNATE_AUTO_SERVICE.createVehicles(5);
+        HIBERNATE_BUS_SERVICE.createVehicles(5);
+        HIBERNATE_MOTORBIKE_SERVICE.createVehicles(5);
+
+        *//*HIBERNATE_AUTO_SERVICE.removeAll();
+        HIBERNATE_BUS_SERVICE.removeAll();
+        HIBERNATE_MOTORBIKE_SERVICE.removeAll();*//*
+
+        HIBERNATE_AUTO_SERVICE.getAll().forEach(System.out::println);
+        HIBERNATE_BUS_SERVICE.getAll().forEach(System.out::println);
+        HIBERNATE_MOTORBIKE_SERVICE.getAll().forEach(System.out::println);
+
+        List<Vehicle> vehicleList = Stream.of(HIBERNATE_AUTO_SERVICE.getAll(),
+                        HIBERNATE_BUS_SERVICE.getAll(),
+                        HIBERNATE_MOTORBIKE_SERVICE.getAll())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<Vehicle> forInvoiceOne = new ArrayList<>();
+        forInvoiceOne.add(vehicleList.get(0));
+        forInvoiceOne.add(vehicleList.get(1));
+        forInvoiceOne.add(vehicleList.get(2));
+        List<Vehicle> forInvoiceTwo = new ArrayList<>();
+        forInvoiceTwo.add(vehicleList.get(3));
+        forInvoiceTwo.add(vehicleList.get(4));
+        forInvoiceTwo.add(vehicleList.get(5));
+        List<Vehicle> forInvoiceThree = new ArrayList<>();
+        forInvoiceThree.add(vehicleList.get(6));
+        forInvoiceThree.add(vehicleList.get(7));
+        forInvoiceThree.add(vehicleList.get(8));
+
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceOne);
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceTwo);
+        HIBERNATE_INVOICE_SERVICE.createInvoice(forInvoiceThree);
+
+        HIBERNATE_INVOICE_SERVICE.getAll().forEach(System.out::println);
+
+        HIBERNATE_INVOICE_SERVICE.getInvoiceCount();
+        HIBERNATE_INVOICE_SERVICE.setCreated("a1166fb5-09bd-4479-8ee9-5a729c1089bb", new Date());
+        HIBERNATE_INVOICE_SERVICE.getInvoiceExpensiveThan(1500);
+        HIBERNATE_INVOICE_SERVICE.getGroupByAmount();*/
+
+        /* Flyway */
+        Flyway flyway = Flyway.configure()
+                .dataSource("jdbc:postgresql://localhost:5432/hibernate", "postgres", "root")
+                .baselineOnMigrate(true)
+                .locations("db/migration")
+                .load();
+        flyway.migrate();
+    }
 
     /* UI */
     /*private static List<String> getNames(Action[] actions) {

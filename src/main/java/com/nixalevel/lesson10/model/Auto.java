@@ -1,14 +1,24 @@
 package com.nixalevel.lesson10.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "auto")
 public class Auto extends Vehicle {
+    @Column(name = "auto_body_type")
     private String bodyType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auto_manufacturer")
     private AutoManufacturer autoManufacturer;
+    @Column(name = "auto_created")
     private Date created;
+    @Column(name = "auto_count")
     private int count;
+
+    @Transient
     private List<String> engine;
     private static int vehicleCount;
 
@@ -48,7 +58,7 @@ public class Auto extends Vehicle {
 
     public Auto(String id, String model, AutoManufacturer autoManufacturer, BigDecimal price, String bodyType,
                 List<String> details, int count, Date created) {
-        super(id, model, price, VehicleType.AUTO , details);
+        super(id, model, price, VehicleType.AUTO, details);
         this.autoManufacturer = autoManufacturer;
         this.bodyType = bodyType;
         this.count = count;
@@ -57,6 +67,7 @@ public class Auto extends Vehicle {
 
     public static class Builder {
         private final Auto newAuto;
+
         public Builder() {
             newAuto = new Auto();
         }
