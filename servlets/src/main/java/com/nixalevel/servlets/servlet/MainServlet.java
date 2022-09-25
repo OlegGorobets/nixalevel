@@ -2,7 +2,6 @@ package com.nixalevel.servlets.servlet;
 
 import com.nixalevel.servlets.model.User;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +15,6 @@ import java.util.List;
 @WebServlet(name = "MainServlet", value = "/main")
 public class MainServlet extends HttpServlet {
     private static final List<User> userList = new ArrayList<>();
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init();
-    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
