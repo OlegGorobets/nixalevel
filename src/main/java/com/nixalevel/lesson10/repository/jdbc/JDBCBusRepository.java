@@ -16,7 +16,7 @@ public class JDBCBusRepository implements CrudRepository<Bus> {
     private static JDBCBusRepository instance;
     private final Connection connection;
 
-    public JDBCBusRepository() {
+    private JDBCBusRepository() {
         connection = JDBCConfig.getConnection();
     }
 

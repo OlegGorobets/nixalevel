@@ -3,6 +3,7 @@ package com.nixalevel.lesson10.service;
 import com.nixalevel.lesson10.model.Invoice;
 import com.nixalevel.lesson10.model.Vehicle;
 import com.nixalevel.lesson10.repository.hibernate.HibernateInvoiceRepository;
+import com.nixalevel.lesson10.repository.mongo.MongoInvoiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,16 +16,16 @@ import java.util.stream.Collectors;
 
 public class InvoiceService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
-    private final HibernateInvoiceRepository repository;
+    private final MongoInvoiceRepository repository;
     private static InvoiceService instance;
 
-    public InvoiceService(HibernateInvoiceRepository repository) {
+    public InvoiceService(MongoInvoiceRepository repository) {
         this.repository = repository;
     }
 
     public static InvoiceService getInstance() {
         if (instance == null) {
-            instance = new InvoiceService(HibernateInvoiceRepository.getInstance());
+            instance = new InvoiceService(MongoInvoiceRepository.getInstance());
         }
         return instance;
     }

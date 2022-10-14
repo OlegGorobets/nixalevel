@@ -14,7 +14,7 @@ public class HibernateAutoRepository implements CrudRepository<Auto> {
     private static HibernateAutoRepository instance;
     private final SessionFactory sessionFactory;
 
-    public HibernateAutoRepository() {
+    private HibernateAutoRepository() {
         sessionFactory = HibernateFactoryUtil.getSessionFactory();
     }
 

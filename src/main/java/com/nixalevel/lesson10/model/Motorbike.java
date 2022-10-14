@@ -44,7 +44,7 @@ public class Motorbike extends Vehicle {
 
     public Motorbike(String id, String model, MotorbikeManufacturer motorbikeManufacturer, BigDecimal price, int maxSpeed,
                      List<String> details, int count, Date created) {
-        super(id, model, price, VehicleType.BUS, details);
+        super(id, model, price, VehicleType.MOTORBIKE, details);
         this.motorbikeManufacturer = motorbikeManufacturer;
         this.maxSpeed = maxSpeed;
         this.count = count;

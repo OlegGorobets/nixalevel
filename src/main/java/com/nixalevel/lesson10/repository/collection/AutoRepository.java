@@ -17,7 +17,7 @@ public class AutoRepository implements CrudRepository<Auto> {
     private static AutoRepository instance;
 
     @Autowired
-    public AutoRepository() {
+    private AutoRepository() {
         autos = new LinkedList<>();
     }
 

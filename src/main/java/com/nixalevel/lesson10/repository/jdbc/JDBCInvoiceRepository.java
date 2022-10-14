@@ -20,7 +20,7 @@ public class JDBCInvoiceRepository {
 
     private final Connection connection;
 
-    public JDBCInvoiceRepository() {
+    private JDBCInvoiceRepository() {
         connection = JDBCConfig.getConnection();
     }
 

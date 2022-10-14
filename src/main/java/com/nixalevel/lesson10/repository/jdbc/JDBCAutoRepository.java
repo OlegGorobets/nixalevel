@@ -16,7 +16,7 @@ public class JDBCAutoRepository implements CrudRepository<Auto> {
     private static JDBCAutoRepository instance;
     private final Connection connection;
 
-    public JDBCAutoRepository() {
+    private JDBCAutoRepository() {
         connection = JDBCConfig.getConnection();
     }
 
