@@ -14,7 +14,7 @@ public class HibernateBusRepository implements CrudRepository<Bus> {
     private static HibernateBusRepository instance;
     private final SessionFactory sessionFactory;
 
-    public HibernateBusRepository() {
+    private HibernateBusRepository() {
         sessionFactory = HibernateFactoryUtil.getSessionFactory();
     }
 

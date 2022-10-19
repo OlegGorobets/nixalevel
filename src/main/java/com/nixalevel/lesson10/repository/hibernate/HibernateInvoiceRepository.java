@@ -15,7 +15,7 @@ public class HibernateInvoiceRepository {
     private static HibernateInvoiceRepository instance;
     private final SessionFactory sessionFactory;
 
-    public HibernateInvoiceRepository() {
+    private HibernateInvoiceRepository() {
         sessionFactory = HibernateFactoryUtil.getSessionFactory();
     }
 

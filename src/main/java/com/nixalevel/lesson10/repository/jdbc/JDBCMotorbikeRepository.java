@@ -16,7 +16,7 @@ public class JDBCMotorbikeRepository implements CrudRepository<Motorbike> {
     private static JDBCMotorbikeRepository instance;
     private final Connection connection;
 
-    public JDBCMotorbikeRepository() {
+    private JDBCMotorbikeRepository() {
         connection = JDBCConfig.getConnection();
     }
 

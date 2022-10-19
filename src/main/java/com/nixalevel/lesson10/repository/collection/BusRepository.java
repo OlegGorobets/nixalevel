@@ -17,7 +17,7 @@ public class BusRepository implements CrudRepository<Bus> {
     private static BusRepository instance;
 
     @Autowired
-    public BusRepository() {
+    private BusRepository() {
         buses = new LinkedList<>();
     }
 

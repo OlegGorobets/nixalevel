@@ -1,5 +1,6 @@
 package com.nixalevel.lesson10;
 
+import com.nixalevel.lesson10.config.HibernateFactoryUtil;
 import com.nixalevel.lesson10.model.*;
 import com.nixalevel.lesson10.repository.hibernate.HibernateAutoRepository;
 import com.nixalevel.lesson10.repository.hibernate.HibernateBusRepository;
@@ -11,6 +12,10 @@ import com.nixalevel.lesson10.repository.collection.MotorbikeRepository;
 /*import com.nixalevel.lesson10.repository.jdbc.JDBCAutoRepository;
 import com.nixalevel.lesson10.repository.jdbc.JDBCBusRepository;
 import com.nixalevel.lesson10.repository.jdbc.JDBCMotorbikeRepository;*/
+import com.nixalevel.lesson10.repository.mongo.MongoAutoRepository;
+import com.nixalevel.lesson10.repository.mongo.MongoBusRepository;
+import com.nixalevel.lesson10.repository.mongo.MongoInvoiceRepository;
+import com.nixalevel.lesson10.repository.mongo.MongoMotorbikeRepository;
 import com.nixalevel.lesson10.service.*;
 import com.nixalevel.lesson10.utility.*;
 import org.flywaydb.core.Flyway;
@@ -29,25 +34,31 @@ import java.util.stream.Stream;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    private static final AutoService AUTO_SERVICE = new AutoService(new AutoRepository());
-    private static final BusService BUS_SERVICE = new BusService(new BusRepository());
-    private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService(new MotorbikeRepository());
-    private static final VehicleService VEHICLE_SERVICE = new AutoService(new AutoRepository());
-    private static final Container<Vehicle> CONTAINER = new Container<>();
 
-    private static final Garage<Vehicle> GARAGE = new Garage<>();
+    /*private static final AutoService AUTO_SERVICE = new AutoService(new AutoRepository());
+    private static final BusService BUS_SERVICE = new BusService(BusRepository.getInstance());
+    private static final MotorbikeService MOTORBIKE_SERVICE = new MotorbikeService(MotorbikeRepository.getInstance());
+    private static final VehicleService VEHICLE_SERVICE = new AutoService(AutoRepository.getInstance());
+    private static final Container<Vehicle> CONTAINER = new Container<>();*/
 
-    /*private static final AutoService JDBC_AUTO_SERVICE = new AutoService(new JDBCAutoRepository());
-    private static final BusService JDBC_BUS_SERVICE = new BusService(new JDBCBusRepository());
-    private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(new JDBCMotorbikeRepository());
-    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(new JDBCInvoiceRepository());*/
+    /*private static final Garage<Vehicle> GARAGE = new Garage<>();*/
 
-    private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(new HibernateAutoRepository());
-    private static final BusService HIBERNATE_BUS_SERVICE = new BusService(new HibernateBusRepository());
-    private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(new HibernateMotorbikeRepository());
-    private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(new HibernateInvoiceRepository());
+    /*private static final AutoService JDBC_AUTO_SERVICE = new AutoService(JDBCAutoRepository.getInstance());
+    private static final BusService JDBC_BUS_SERVICE = new BusService(JDBCBusRepository.getInstance());
+    private static final MotorbikeService JDBC_MOTORBIKE_SERVICE = new MotorbikeService(JDBCMotorbikeRepository.getInstance());
+    private static final InvoiceService JDBC_INVOICE_SERVICE = new InvoiceService(JDBCInvoiceRepository.getInstance());*/
 
-    public static void main(String[] args) throws ParseException, SQLException {
+   /* private static final AutoService HIBERNATE_AUTO_SERVICE = new AutoService(HibernateAutoRepository.getInstance());
+    private static final BusService HIBERNATE_BUS_SERVICE = new BusService(HibernateBusRepository.getInstance());
+    private static final MotorbikeService HIBERNATE_MOTORBIKE_SERVICE = new MotorbikeService(HibernateMotorbikeRepository.getInstance());
+    private static final InvoiceService HIBERNATE_INVOICE_SERVICE = new InvoiceService(HibernateInvoiceRepository.getInstance());*/
+
+    private static final AutoService MONGO_AUTO_SERVICE = new AutoService(MongoAutoRepository.getInstance());
+    private static final BusService MONGO_BUS_SERVICE = new BusService(MongoBusRepository.getInstance());
+    private static final MotorbikeService MONGO_MOTORBIKE_SERVICE = new MotorbikeService(MongoMotorbikeRepository.getInstance());
+    private static final InvoiceService MONGO_INVOICE_SERVICE = new InvoiceService(MongoInvoiceRepository.getInstance());
+
+    public static void main(String[] args) throws ParseException, SQLException, InterruptedException {
         /* Create all types of products */
         /*final List<Auto> autos = AUTO_SERVICE.createVehicles(5);
         final List<Bus> buses = BUS_SERVICE.createVehicles(5);
@@ -342,9 +353,9 @@ public class Main {
         HIBERNATE_BUS_SERVICE.createVehicles(5);
         HIBERNATE_MOTORBIKE_SERVICE.createVehicles(5);
 
-        *//*HIBERNATE_AUTO_SERVICE.removeAll();
+        HIBERNATE_AUTO_SERVICE.removeAll();
         HIBERNATE_BUS_SERVICE.removeAll();
-        HIBERNATE_MOTORBIKE_SERVICE.removeAll();*//*
+        HIBERNATE_MOTORBIKE_SERVICE.removeAll();
 
         HIBERNATE_AUTO_SERVICE.getAll().forEach(System.out::println);
         HIBERNATE_BUS_SERVICE.getAll().forEach(System.out::println);
@@ -380,12 +391,52 @@ public class Main {
         HIBERNATE_INVOICE_SERVICE.getGroupByAmount();*/
 
         /* Flyway */
-        Flyway flyway = Flyway.configure()
+        /*Flyway flyway = Flyway.configure()
                 .dataSource("jdbc:postgresql://localhost:5432/hibernate", "postgres", "root")
                 .baselineOnMigrate(true)
                 .locations("db/migration")
                 .load();
-        flyway.migrate();
+        flyway.migrate();*/
+
+        /* NoSQL */
+        MONGO_AUTO_SERVICE.removeAll();
+        MONGO_BUS_SERVICE.removeAll();
+        MONGO_MOTORBIKE_SERVICE.removeAll();
+        MONGO_INVOICE_SERVICE.removeAll();
+
+        MONGO_AUTO_SERVICE.createVehicles(5);
+        MONGO_BUS_SERVICE.createVehicles(5);
+        MONGO_MOTORBIKE_SERVICE.createVehicles(5);
+
+        MONGO_AUTO_SERVICE.getAll().forEach(System.out::println);
+        MONGO_BUS_SERVICE.getAll().forEach(System.out::println);
+        MONGO_MOTORBIKE_SERVICE.getAll().forEach(System.out::println);
+
+        List<Vehicle> vehicleList = Stream.of(MONGO_AUTO_SERVICE.getAll(),
+                        MONGO_BUS_SERVICE.getAll(),
+                        MONGO_MOTORBIKE_SERVICE.getAll())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<Vehicle> forInvoiceOne = new ArrayList<>();
+        forInvoiceOne.add(vehicleList.get(0));
+        forInvoiceOne.add(vehicleList.get(1));
+        forInvoiceOne.add(vehicleList.get(2));
+        List<Vehicle> forInvoiceTwo = new ArrayList<>();
+        forInvoiceTwo.add(vehicleList.get(3));
+        forInvoiceTwo.add(vehicleList.get(4));
+        forInvoiceTwo.add(vehicleList.get(5));
+        List<Vehicle> forInvoiceThree = new ArrayList<>();
+        forInvoiceThree.add(vehicleList.get(6));
+        forInvoiceThree.add(vehicleList.get(7));
+        forInvoiceThree.add(vehicleList.get(8));
+
+        MONGO_INVOICE_SERVICE.createInvoice(forInvoiceOne);
+        MONGO_INVOICE_SERVICE.createInvoice(forInvoiceTwo);
+        MONGO_INVOICE_SERVICE.createInvoice(forInvoiceThree);
+
+        /* Concurrency */
+        Factory factory = new Factory();
+        factory.startFactory();
     }
 
     /* UI */

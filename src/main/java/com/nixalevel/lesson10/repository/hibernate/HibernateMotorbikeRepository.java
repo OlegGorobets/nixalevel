@@ -14,7 +14,7 @@ public class HibernateMotorbikeRepository implements CrudRepository<Motorbike> {
     private static HibernateMotorbikeRepository instance;
     private final SessionFactory sessionFactory;
 
-    public HibernateMotorbikeRepository() {
+    private HibernateMotorbikeRepository() {
         sessionFactory = HibernateFactoryUtil.getSessionFactory();
     }
 

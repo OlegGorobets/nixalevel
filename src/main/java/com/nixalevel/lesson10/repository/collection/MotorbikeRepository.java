@@ -17,7 +17,7 @@ public class MotorbikeRepository implements CrudRepository<Motorbike> {
     private static MotorbikeRepository instance;
 
     @Autowired
-    public MotorbikeRepository() {
+    private MotorbikeRepository() {
         motorbikes = new LinkedList<>();
     }
 
